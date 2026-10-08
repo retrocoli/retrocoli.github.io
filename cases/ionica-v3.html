@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>iônica V3 APP (FTD Educação) — Rê Trocoli</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --ground:      #F8F9FA;
+    --ground-soft: #F1F2F4;
+    --ink:         #1A1A1A;
+    --ink-muted:   #6A6F76;
+    --ink-faint:   #9AA0A7;
+    --rule:        #DFE2E6;
+    --accent:      #2E4A62;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #131517;
+      --ground-soft: #191C1F;
+      --ink:         #ECEDEF;
+      --ink-muted:   #949AA2;
+      --ink-faint:   #6B7178;
+      --rule:        #2A2E33;
+      --accent:      #93B4CE;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #131517;
+    --ground-soft: #191C1F;
+    --ink:         #ECEDEF;
+    --ink-muted:   #949AA2;
+    --ink-faint:   #6B7178;
+    --rule:        #2A2E33;
+    --accent:      #93B4CE;
+  }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .mono {
+    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .label {
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  h1, h2, h3 { text-wrap: balance; }
+
+  .display { font-weight: 700; letter-spacing: -0.035em; line-height: 0.96; }
+
+  .rule-top { border-top: 1px solid var(--rule); }
+
+  /* Navegação ---------------------------------------------------------------- */
+  .nav-link { color: var(--ink-muted); text-decoration: none; transition: color 200ms ease; }
+  .nav-link:hover { color: var(--accent); }
+  .nav-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+  .nav-link .arrow { display: inline-block; transition: transform 220ms ease; }
+  .nav-link:hover .arrow { transform: translateX(-0.2rem); }
+  .nav-next:hover .arrow { transform: translateX(0.2rem); }
+
+  /* Tags ---------------------------------------------------------------------- */
+  .tag {
+    font-size: 0.75rem;
+    line-height: 1;
+    padding: 0.375rem 0.5625rem;
+    border-radius: 4px;
+    background: var(--ground-soft);
+    color: var(--ink-muted);
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.375rem; }
+
+  /* Placeholders --------------------------------------------------------------- */
+  figure { margin: 0; }
+  .shot {
+    border-radius: 10px;
+    background: var(--ground-soft);
+    border: 1px solid var(--rule);
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    position: relative;
+  }
+  .shot img { width: 100%; height: auto; display: block; border-radius: 10px; }
+  .shot-note { font-size: 0.8125rem; line-height: 1.5; color: var(--ink-faint); max-width: 36ch; }
+  figcaption { margin-top: 0.75rem; font-size: 0.8125rem; line-height: 1.55; color: var(--ink-muted); }
+
+  /* Selo discreto para conteúdo exploratório ------------------------------------ */
+  .badge-future {
+    position: absolute;
+    top: 0.875rem;
+    left: 0.875rem;
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 0.3125rem 0.625rem;
+    background: var(--ground);
+  }
+
+  /* Destaque editorial ---------------------------------------------------------- */
+  .pull {
+    border-left: 2px solid var(--rule);
+    padding-left: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.35;
+    color: var(--ink);
+  }
+
+  /* Cadeia da jornada / passos -------------------------------------------------- */
+  .chain { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.625rem; }
+  .chain li { display: flex; align-items: center; gap: 0.625rem; }
+  .chain .step {
+    font-size: 0.8125rem;
+    line-height: 1;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .chain .sep { color: var(--ink-faint); }
+
+  /* Legenda de sinalização ------------------------------------------------------- */
+  .signal-list { display: grid; gap: 0.875rem; }
+  .signal-list dt {
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .signal-list dd { margin: 0.25rem 0 0; color: var(--ink-muted); font-size: 0.9375rem; line-height: 1.6; }
+
+  .dot {
+    display: inline-block;
+    width: 0.4375rem;
+    height: 0.4375rem;
+    border-radius: 999px;
+    background: var(--ink-faint);
+    vertical-align: middle;
+    margin-right: 0.375rem;
+  }
+  .dot-pulse { animation: pulse 1.8s ease-in-out infinite; }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.25; }
+  }
+
+  /* Hoje / visão futura ----------------------------------------------------------- */
+  .horizon { border-top: 1px solid var(--rule); padding-top: 1.25rem; }
+  .horizon-label {
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .prose { color: var(--ink-muted); line-height: 1.7; }
+  .prose p + p { margin-top: 1.125rem; }
+  .prose ul { margin: 1.125rem 0 0; padding-left: 1.125rem; }
+  .prose li + li { margin-top: 0.4375rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    .nav-link .arrow { transform: none !important; }
+    .dot-pulse { animation: none !important; opacity: 1 !important; }
+  }
+</style>
+<meta content="Evoluindo jornadas de Estudantes e Professores para ampliar autonomia e interação no mobile, com acessibilidade desde a concepção e menos dependência dos padrões da Web." name="description"/>
+<meta content="website" property="og:type"/>
+<meta content="iônica V3 APP (FTD Educação) — Rê Trocoli" property="og:title"/>
+<meta content="Evoluindo jornadas de Estudantes e Professores para ampliar autonomia e interação no mobile, com acessibilidade desde a concepção e menos dependência dos padrões da Web." property="og:description"/>
+<meta content="pt_BR" property="og:locale"/>
+<meta content="#F8F9FA" name="theme-color"/>
+<link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231A1A1A'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-family='Inter,Arial,sans-serif' font-weight='600' font-size='30' fill='%23F8F9FA'%3ERT%3C/text%3E%3C/svg%3E" rel="icon"/>
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="mx-auto w-full max-w-[76rem] px-5 sm:px-8 lg:px-12">
+<!-- Topo ---------------------------------------------------------------------- -->
+<header class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 py-6 sm:py-8">
+<a class="nav-link mono text-[0.8125rem] font-medium" href="../index.html">
+<span aria-hidden="true" class="arrow">←</span> Todos os cases
+    </a>
+<a class="nav-link mono text-[0.8125rem] font-medium" href="../index.html" style="color: var(--ink);">Rê Trocoli</a>
+</header>
+<!-- Hero ----------------------------------------------------------------------- -->
+<section class="rule-top pt-10 pb-12 sm:pt-14 sm:pb-16 lg:pt-20 lg:pb-20">
+<p class="label mb-8 sm:mb-10">FTD Educação · Product Design</p>
+<h1 class="display text-[clamp(2.25rem,6vw,4.25rem)] max-w-[18ch]">
+      iônica V3: uma experiência cada vez mais pensada como APP
+    </h1>
+<p class="mt-8 sm:mt-10 max-w-[58ch] text-[clamp(1.0625rem,1.5vw,1.375rem)] leading-[1.6]" style="color: var(--ink-muted);">
+      Evoluindo jornadas de Estudantes e Professores para ampliar autonomia e interação no mobile,
+      com acessibilidade desde a concepção e menos dependência dos padrões da Web.
+    </p>
+<p class="mono mt-8 text-[0.8125rem] leading-[1.7]" style="color: var(--ink-faint);">
+      FTD Educação · Product Designer Sênior · APP · 2026 · Em evolução
+    </p>
+</section>
+<!-- 01 — Evoluir o que já existe ------------------------------------------------- -->
+<section aria-labelledby="evoluir" class="rule-top pt-14 sm:pt-20">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">01</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[16ch]" id="evoluir">
+          Evoluir o que já existe
+        </h2>
+</div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+          A iônica é uma plataforma educacional utilizada por diferentes perfis, incluindo
+          Estudante, Professor e Gestor, em experiências que acontecem na Web e no APP.
+        </p>
+<p>
+          Na versão atual do APP, o Estudante já consegue consultar notas e realizar Atividades,
+          mas a experiência de Atividades é mais simples.
+        </p>
+<p>
+          A V3 parte dessa base para construir uma experiência mais completa: reorganiza a forma de
+          encontrar e acompanhar atividades, trabalha diferentes estados e prazos e incorpora novas
+          possibilidades de interação com professores.
+        </p>
+<p>
+          O objetivo não é simplesmente reproduzir a Web em uma tela menor. É fazer com que a
+          experiência seja cada vez mais pensada como APP.
+        </p>
+</div>
+</div>
+<p class="pull mt-12 sm:mt-14 max-w-[46ch] text-[clamp(1.125rem,2.2vw,1.5rem)]">
+      O APP atual já permite consultar notas e realizar Atividades. A V3 evolui essa base para uma
+      experiência mais completa, acessível e própria do contexto mobile.
+    </p>
+<!-- IMAGEM 01 -->
+<figure class="mt-12 sm:mt-16">
+<div class="shot" style="aspect-ratio: 2240 / 1420;">
+<img alt="Comparação entre a experiência atual e a evolução da iônica V3 no APP." src="img/ionica-01-atual-v3.png"/>
+</div>
+<figcaption>O ponto de partida já existente e o que a V3 evolui a partir dele.</figcaption>
+</figure>
+</section>
+<!-- 02 — A Web era referência ------------------------------------------------------ -->
+<section aria-labelledby="web-referencia" class="pt-16 sm:pt-24 lg:pt-28">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">02</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[16ch]" id="web-referencia">
+          A Web era uma referência, não a solução
+        </h2>
+</div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+          A evolução da Web V3 é conduzida por outra frente. No APP, meu trabalho utiliza os fluxos
+          da Web como referência quando necessário, mas exige uma nova leitura da experiência.
+        </p>
+<p>O Discovery começou pelo entendimento:</p>
+<ul>
+<li>do que já estava implementado;</li>
+<li>do que existia apenas como proposta;</li>
+<li>das diferenças entre APP atual, Web atual e V3;</li>
+<li>das dependências do roadmap da Web;</li>
+<li>dos padrões e componentes existentes;</li>
+<li>da aderência desses fluxos ao contexto mobile;</li>
+<li>de gaps e inconsistências.</li>
+</ul>
+<p>O trabalho não era “responsivizar” telas.</p>
+</div>
+</div>
+<p class="pull mt-12 sm:mt-14 max-w-[42ch] text-[clamp(1.25rem,2.4vw,1.75rem)]">
+      O que precisa mudar para que essa jornada funcione bem como uma experiência de APP?
+    </p>
+<!-- IMAGEM 02 -->
+<figure class="mt-12 sm:mt-16">
+<div class="shot" style="aspect-ratio: 2240 / 1260;">
+<img alt="A experiência web, já mais ampla, ao lado da V3 do APP que leva essa visibilidade para o mobile." src="img/ionica-02-web-para-app.png"/>
+</div>
+<figcaption>A experiência web já havia evoluído, ganhando mais visibilidade sobre prazos e atividades. A V3 do APP leva essa experiência ampliada para o mobile, que antes ficava restrito a apenas “fazer” a atividade.</figcaption>
+</figure>
+</section>
+<!-- 03 — Meu papel -------------------------------------------------------------------- -->
+<section aria-labelledby="papel" class="pt-16 sm:pt-24 lg:pt-28">
+<div class="rule-top pt-10 grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">03</p>
+<h2 class="display text-[clamp(1.5rem,2.8vw,2rem)]" id="papel">Meu papel</h2>
+</div>
+<div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+            Atuo como Product Designer Sênior na evolução da experiência do APP, revisando e
+            projetando jornadas da V3 para diferentes contextos de uso.
+          </p>
+<p>
+            Meu trabalho envolve compreender fluxos e regras existentes, identificar gaps na
+            experiência mobile, reorganizar arquitetura e hierarquia quando necessário e definir
+            navegação, interação, componentes e comportamento da interface.
+          </p>
+<p>
+            A experiência é pensada para smartphones, tablets e Chromebook, considerando também
+            modo claro, modo escuro e condições de acessibilidade como ampliação de texto em 150%
+            e 200%.
+          </p>
+<p>
+            Trabalho em parceria próxima com UX Writing durante o processo. Interface e conteúdo
+            são discutidos conjuntamente, com uma divisão clara de responsabilidade: as decisões
+            finais de Design são minhas; as decisões finais de microcopy são de UX Writing.
+          </p>
+</div>
+<div class="tags mt-7">
+<span class="tag">Arquitetura da informação</span>
+<span class="tag">Jornadas mobile</span>
+<span class="tag">Acessibilidade</span>
+<span class="tag">Componentes</span>
+<span class="tag">Multi-dispositivo</span>
+<span class="tag">Multiperfil</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Nota de contexto — repertório anterior ao app ----------------------------------------- -->
+<aside aria-labelledby="antes-do-app" class="pt-12 sm:pt-16">
+<div class="rule-top pt-8 grid gap-x-16 gap-y-5 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mb-4">Contexto</p>
+<h2 class="text-[clamp(1.125rem,1.8vw,1.375rem)] font-bold leading-[1.2] max-w-[22ch]" id="antes-do-app" style="letter-spacing: -0.015em;">
+          Um conhecimento construído antes do aplicativo
+        </h2>
+</div>
+<div class="prose max-w-[58ch] text-[0.9375rem] sm:text-[1rem]">
+<p>
+          Antes de trabalhar no aplicativo, fui responsável por melhorias e evoluções da primeira
+          versão da iônica. Acompanhei o produto em uso por meio de shadowing, mapas de calor e
+          análise dos fluxos existentes — um trabalho anterior a esta frente, não parte dela.
+        </p>
+<p>
+          Esse período me permitiu compreender melhor os comportamentos, as dificuldades e as
+          necessidades presentes na experiência. Os aprendizados acumulados ali serviram como
+          contexto para o projeto do aplicativo e ajudaram a orientar decisões da nova experiência.
+        </p>
+<!-- TODO: quando a página do case da iônica V1 existir, inserir aqui o link:
+             <p class="mt-5">
+               <a class="nav-link font-medium" href="./ionica-v1.html" style="color: var(--ink);">
+                 Conheça o case de evolução da iônica V1 <span class="arrow" aria-hidden="true">→</span>
+               </a>
+             </p>
+             Não inserir link antes de existir a rota — nada de "#" ou destino provisório. -->
+</div>
+</div>
+</aside>
+<!-- 04 — Atividades --------------------------------------------------------------------- -->
+<section aria-labelledby="atividades" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">04</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[18ch]" id="atividades">
+          Atividades: de uma experiência simples para uma jornada mais completa
+        </h2>
+</div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+          O Estudante já consegue realizar Atividades no APP atual. Na V3, o desafio não é criar
+          essa capacidade do zero, mas evoluir a experiência para que o Estudante consiga
+          compreender e acompanhar melhor todo o ciclo da atividade.
+        </p>
+<p>
+          A experiência passa a considerar diferentes momentos, estados, regras, informações e
+          prazos. O desafio não era apenas fazer tudo caber em uma tela menor. Era decidir o que
+          precisava receber atenção primeiro.
+        </p>
+</div>
+</div>
+<ul aria-label="Ciclo da atividade" class="chain mt-10 sm:mt-12">
+<li><span class="step">encontrar</span><span aria-hidden="true" class="sep">→</span></li>
+<li><span class="step">priorizar</span><span aria-hidden="true" class="sep">→</span></li>
+<li><span class="step">realizar</span><span aria-hidden="true" class="sep">→</span></li>
+<li><span class="step">entregar</span><span aria-hidden="true" class="sep">→</span></li>
+<li><span class="step">acompanhar</span><span aria-hidden="true" class="sep">→</span></li>
+<li><span class="step">receber retorno</span><span aria-hidden="true" class="sep">→</span></li>
+<li><span class="step">interagir</span></li>
+</ul>
+<!-- IMAGEM 03 -->
+<figure class="mt-12 sm:mt-16">
+<div class="shot" style="aspect-ratio: 2240 / 1260;">
+<img alt="Tela de acompanhamento de questões da V3: o topo e o rodapé se retraem ao rolar, com o cronômetro flutuando discreto, até o retorno com a nota." src="img/ionica-03-jornada-atividades.png"/>
+</div>
+<figcaption>Ajustes pensados para a tela menor do app, da resposta às questões ao acompanhamento das entregas.</figcaption>
+</figure>
+</section>
+<!-- 05 — Decisão 01 ------------------------------------------------------------------------ -->
+<section aria-labelledby="decisao-01" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="rule-top pt-10 sm:pt-12 grid gap-x-16 gap-y-6 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="mono label mb-4">05 · Decisão 01</p>
+<h2 class="display text-[clamp(1.5rem,2.8vw,2rem)] max-w-[18ch]" id="decisao-01">
+          Começar pelo que precisa ser feito
+        </h2>
+</div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+          Durante a estruturação da experiência, foi removida uma tela genérica de “Início” e
+          “Para entregar” passou a ser a principal entrada em Atividades.
+        </p>
+<p>
+          A arquitetura procura acompanhar o momento da jornada do Estudante em vez de simplesmente
+          reproduzir a estrutura interna do produto. Em uma experiência mobile, reduzir uma etapa
+          também aproxima o Estudante daquilo que exige sua atenção.
+        </p>
+</div>
+</div>
+<ul aria-label="Momentos da experiência de Atividades" class="chain mt-9">
+<li><span class="step">Para entregar</span></li>
+<li><span class="step">Para refazer</span></li>
+<li><span class="step">Entregues</span></li>
+<li><span class="step">Agendadas</span></li>
+</ul>
+<!-- IMAGEM 04 -->
+<figure class="mt-10 sm:mt-14">
+<div class="shot" style="aspect-ratio: 2240 / 1260;">
+<img alt="Organização das Atividades da iônica V3 por momentos da jornada do Estudante: Para entregar, Para refazer, Entregues e Agendadas." src="img/ionica-04-navegacao-atividades.png"/>
+</div>
+<figcaption>Elementos do topo reduzidos para que os cards de atividades fiquem visíveis e acessíveis já na primeira dobra.</figcaption>
+</figure>
+</section>
+<!-- 06 — Decisão 02 --------------------------------------------------------------------------- -->
+<section aria-labelledby="decisao-02" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="rule-top pt-10 sm:pt-12 grid gap-x-16 gap-y-6 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="mono label mb-4">06 · Decisão 02</p>
+<h2 class="display text-[clamp(1.5rem,2.8vw,2rem)] max-w-[18ch]" id="decisao-02">
+          Projetar para ser percebido antes de ser lido
+        </h2>
+</div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+          Prazo é uma informação crítica dentro de Atividades. Em telas pequenas, textos auxiliares
+          e metadados possuem menor presença visual e podem passar despercebidos durante uma
+          leitura rápida.
+        </p>
+<p>
+          Por isso, trabalhei a cor como parte da hierarquia da experiência. O rosa passou a
+          funcionar como sinal visual associado às atividades ativas e que ainda exigem uma ação do
+          Estudante.
+        </p>
+<p>
+          Quando uma atividade entra em uma faixa crítica — aproximadamente 24 horas antes de
+          expirar — a tag de prazo recebe também uma bolinha pulsante, aumentando sua saliência
+          visual e chamando atenção para a urgência.
+        </p>
+<p>
+          Além da urgência, cores também comunicam o status da atividade — agendada, em correção,
+          entregue, corrigida ou expirada — reforçando o estado sem depender só do texto.
+        </p>
+</div>
+</div>
+<dl class="signal-list mt-10 sm:mt-12 max-w-[62ch]">
+<div>
+<dt>Rosa</dt>
+<dd>atividade ativa — existe algo a fazer</dd>
+</div>
+<div>
+<dt>Tag de prazo</dt>
+<dd>informa quando termina</dd>
+</div>
+<div>
+<dt><span aria-hidden="true" class="dot dot-pulse"></span>Bolinha pulsante</dt>
+<dd>reforça a urgência quando o prazo está crítico</dd>
+</div>
+<div>
+<dt>Texto</dt>
+<dd>mantém a informação explícita</dd>
+</div>
+</dl>
+<p class="pull mt-10 sm:mt-12 max-w-[40ch] text-[clamp(1.125rem,2.2vw,1.5rem)]">
+      Cor e movimento reforçam a informação. Não substituem o significado.
+    </p>
+<p class="prose mt-6 max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+      A informação de prazo não depende exclusivamente da cor ou da animação.
+    </p>
+<!-- IMAGEM 05 -->
+<figure class="mt-12 sm:mt-16">
+<div class="shot" style="aspect-ratio: 2240 / 990;">
+<img alt="Anatomia completa da sinalização de Atividades da iônica V3: prazo (ativa, crítica) e status (agendada, em correção, entregue, corrigida, expirada)." src="img/ionica-05-sinalizacao-prazo.png"/>
+</div>
+<figcaption>A anatomia completa da sinalização: urgência de prazo e status da atividade.</figcaption>
+</figure>
+</section>
+<!-- 07 — Decisão 03 ------------------------------------------------------------------------------ -->
+<section aria-labelledby="decisao-03" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="rule-top pt-10 sm:pt-12 grid gap-x-16 gap-y-6 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="mono label mb-4">07 · Decisão 03</p>
+<h2 class="display text-[clamp(1.5rem,2.8vw,2rem)] max-w-[18ch]" id="decisao-03">
+          Organizar a complexidade pela jornada do Estudante
+        </h2>
+</div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+          Por trás de “Atividades” existem diferentes estados e momentos. Uma atividade pode estar
+          disponível, agendada, entregue, em correção, corrigida ou precisar ser refeita. Também
+          pode envolver prazo, nota, feedback, comentários e diferentes regras de execução.
+        </p>
+<p>
+          O objetivo foi evitar que toda essa complexidade aparecesse simultaneamente. A
+          arquitetura apresenta primeiro aquilo que representa uma intenção ou um momento
+          reconhecível para o Estudante. Os demais estados aparecem no contexto em que se tornam
+          relevantes.
+        </p>
+</div>
+</div>
+<p class="pull mt-10 sm:mt-12 max-w-[44ch] text-[clamp(1.125rem,2.2vw,1.5rem)]">
+      Preservar a complexidade necessária ao produto sem transferir toda essa complexidade para
+      quem o utiliza.
+    </p>
+</section>
+<!-- 08 — Acessibilidade -------------------------------------------------------------------------- -->
+<section aria-labelledby="acessibilidade" class="pt-20 sm:pt-28 lg:pt-36">
+<p class="label mono mb-6">08</p>
+<h2 class="display text-[clamp(2rem,5vw,3.5rem)] max-w-[16ch]" id="acessibilidade">
+      Acessibilidade não entra no final
+    </h2>
+<div class="mt-8 sm:mt-10 grid gap-x-16 gap-y-6 lg:grid-cols-2">
+<div class="prose max-w-[54ch] text-[1.0625rem] sm:text-[1.125rem]">
+<p>
+          Acessibilidade é um dos pilares do trabalho na V3 APP. Uma experiência que funciona na
+          Web precisa ser cuidadosamente observada quando passa para telas menores.
+        </p>
+<p>
+          A ampliação afeta muito mais do que a tipografia. Títulos podem ocupar novas linhas,
+          componentes precisam acomodar mais conteúdo, metadados ganham altura e ações precisam
+          continuar disponíveis e compreensíveis.
+        </p>
+</div>
+<div class="prose max-w-[54ch] text-[1.0625rem] sm:text-[1.125rem] lg:pt-1">
+<p>
+          Minha responsabilidade como Product Designer é definir como layout, hierarquia,
+          componentes, espaçamentos e interações respondem a essas condições sem comprometer a
+          realização da tarefa. As decisões relacionadas aos textos e à microcopy são discutidas
+          conjuntamente e conduzidas por UX Writing.
+        </p>
+</div>
+</div>
+<p class="pull mt-10 sm:mt-12 max-w-[44ch] text-[clamp(1.125rem,2.2vw,1.5rem)]">
+      O que funciona na Web não necessariamente continua acessível quando cabe em uma tela menor.
+    </p>
+<div class="mt-10 sm:mt-12 grid gap-8 sm:grid-cols-2">
+<div>
+<p class="label mb-3">Ampliação de texto avaliada</p>
+<ul aria-label="Níveis de ampliação de texto avaliados" class="chain">
+<li><span class="step mono">100%</span><span aria-hidden="true" class="sep">→</span></li>
+<li><span class="step mono">150%</span><span aria-hidden="true" class="sep">→</span></li>
+<li><span class="step mono">200%</span></li>
+</ul>
+</div>
+<div>
+<p class="label mb-3">A experiência também considera</p>
+<div class="tags">
+<span class="tag">Modo claro</span>
+<span class="tag">Modo escuro</span>
+<span class="tag">Smartphones</span>
+<span class="tag">Tablets</span>
+<span class="tag">Chromebook</span>
+</div>
+</div>
+</div>
+<!-- IMAGEM 07 -->
+<figure class="mt-12 sm:mt-16">
+<div class="shot" style="aspect-ratio: 2240 / 1544;">
+<img alt="Bloco de Atividades da Home em 100%, 150% e 200% de ampliação de texto." src="img/ionica-07-ampliacao.png"/>
+</div>
+<figcaption>A ampliação muda o layout, não só a tipografia.</figcaption>
+</figure>
+</section>
+<!-- 09 — Além do happy path ------------------------------------------------------------------------ -->
+<section aria-labelledby="happy-path" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">09</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[16ch]" id="happy-path">
+          Projetar além do happy path
+        </h2>
+</div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+          A experiência também precisa funcionar quando o cenário não é o ideal. Os fluxos
+          consideram diferentes estados da interface, como carregamento, ausência de conteúdo e
+          erros, além dos diferentes estados das próprias atividades.
+        </p>
+<p>
+          O objetivo é manter orientação e continuidade mesmo quando a experiência sai do caminho
+          principal.
+        </p>
+</div>
+</div>
+<!-- IMAGEM 08 -->
+<figure class="mt-12 sm:mt-16">
+<div class="shot" style="aspect-ratio: 2240 / 1260;">
+<img alt="Estados da tela de Atividades: conteúdo, erro de internet, vazio e carregamento (lazy loading)." src="img/ionica-08-estados-interface.png"/>
+</div>
+</figure>
+</section>
+<!-- 10 — Mural -------------------------------------------------------------------------------------- -->
+<section aria-labelledby="mural" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">10</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[16ch]" id="mural">
+          Mural: evoluir a interação dentro das Salas
+        </h2>
+</div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+          Enquanto Atividades evolui uma jornada já existente para o Estudante, o Mural parte de
+          uma experiência que também já existia no APP e amplia suas possibilidades dentro das
+          Salas.
+        </p>
+<p>
+          Na V3, o Mural evolui a comunicação entre Professor e Estudante. Para o Professor, o
+          fluxo contempla ações como criar uma postagem, responder, editar, excluir e acompanhar
+          interações dentro de uma Sala. Para o Estudante, o Mural amplia as possibilidades de
+          interação com o Professor dentro do contexto escolar.
+        </p>
+<p>
+          Essa frente também considera diferentes tipos de conteúdo, respostas e estados como
+          carregamento, vazio e erro.
+        </p>
+</div>
+</div>
+<!-- IMAGEM 09 -->
+<figure class="mt-12 sm:mt-16">
+<div class="shot" style="aspect-ratio: 2240 / 1260;">
+<img alt="Fluxo do Mural na iônica V3: postagens do professor, comentários, resposta restrita e edição/exclusão." src="img/ionica-09-mural.png"/>
+</div>
+</figure>
+</section>
+<!-- 11 — Comentários (microcase) ----------------------------------------------------------------------- -->
+<section aria-labelledby="comentarios" class="pt-16 sm:pt-24 lg:pt-28">
+<div class="rule-top pt-10 grid gap-x-16 gap-y-6 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-4">11</p>
+<h2 class="display text-[clamp(1.375rem,2.4vw,1.75rem)] max-w-[20ch]" id="comentarios">
+          Comentários no contexto da Atividade
+        </h2>
+</div>
+<div class="prose max-w-[58ch] text-[0.9375rem] sm:text-[1rem]">
+<p>
+          A interação também acontece dentro da própria jornada de Atividades. Comentários precisam
+          coexistir com o conteúdo que o Estudante está realizando sem transformar a conversa em
+          uma experiência completamente desconectada da tarefa.
+        </p>
+<p>
+          A solução considera os comentários como parte do contexto da Atividade, permitindo
+          consultar a conversa e participar dela mantendo a relação com aquilo que está sendo
+          realizado. As decisões de interação e comportamento da interface pertencem ao trabalho de
+          Design; as decisões finais de microcopy pertencem a UX Writing.
+        </p>
+</div>
+</div>
+<!-- IMAGEM 10 -->
+<figure class="mt-12 sm:mt-16">
+<div class="shot" style="aspect-ratio: 2240 / 1260;">
+<img alt="Comentários dentro de uma Atividade da iônica V3: atividade corrigida, comentário do professor e resposta do estudante." src="img/ionica-10-comentarios.png"/>
+</div>
+</figure>
+</section>
+<!-- 12 — Cada vez mais APP -------------------------------------------------------------------------------- -->
+<section aria-labelledby="mais-app" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">12</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[14ch]" id="mais-app">
+          Cada vez mais APP
+        </h2>
+</div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+          À medida que a iônica ganha novas capacidades no APP, também surgem oportunidades de
+          explorar recursos próprios do dispositivo, em vez de reproduzir padrões originados na
+          Web.
+        </p>
+<p>
+          Uma das ideias em exploração é utilizar Live Activities para ajudar o Estudante a
+          acompanhar atividades com prazo. A mesma necessidade que hoje orienta a sinalização de
+          urgência dentro da interface poderia, futuramente, acompanhar o Estudante no contexto do
+          próprio dispositivo e ajudá-lo a perceber que uma atividade está próxima de expirar.
+        </p>
+</div>
+</div>
+<div class="mt-10 sm:mt-12 grid gap-8 sm:gap-12 md:grid-cols-2">
+<div class="horizon">
+<p class="horizon-label mb-3">Hoje</p>
+<p class="text-[1rem] sm:text-[1.0625rem] leading-[1.7] max-w-[36ch]" style="color: var(--ink-muted);">
+          Prazo e urgência são sinalizados dentro da iônica.
+        </p>
+</div>
+<div class="horizon">
+<p class="horizon-label mb-3">Visão futura</p>
+<p class="text-[1rem] sm:text-[1.0625rem] leading-[1.7] max-w-[36ch]" style="color: var(--ink-muted);">
+          Explorar recursos do dispositivo para acompanhar atividades com prazo também fora da tela
+          principal do APP.
+        </p>
+</div>
+</div>
+<!-- IMAGEM 11 -->
+<figure class="mt-12 sm:mt-16">
+<div class="shot" style="aspect-ratio: 2240 / 1260;">
+<span class="badge-future">Exploração / visão futura</span>
+<img alt="Exploração conceitual de recursos nativos do dispositivo: Live Activity na tela de bloqueio (prazo chegando, crítico, entregue, corrigido) e widget de Atividades na home screen." src="img/ionica-11-live-activities.png"/>
+</div>
+<figcaption>Exploração conceitual — não é uma funcionalidade implementada.</figcaption>
+</figure>
+</section>
+<!-- 13 — Continua evoluindo ---------------------------------------------------------------------------------- -->
+<section aria-labelledby="evoluindo" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">13</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[16ch]" id="evoluindo">
+          Um produto que continua evoluindo
+        </h2>
+</div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+          A V3 APP ainda está em evolução. O trabalho avança em experiências como Atividades para
+          Estudante, comentários e evolução do Mural em Salas, enquanto outras capacidades fazem
+          parte da direção futura do produto.
+        </p>
+<p>
+          A visão é ampliar progressivamente a autonomia dos diferentes perfis e aproximar cada vez
+          mais a experiência das características próprias de um APP. Possibilidades futuras incluem
+          maior autonomia para Professor e Gestor, como gerenciamento de Salas e criação de
+          Atividades.
+        </p>
+</div>
+</div>
+<p class="pull mt-12 sm:mt-14 max-w-[52ch] text-[clamp(1.125rem,2.2vw,1.5rem)]">
+      Não se trata de buscar paridade com a Web tela por tela. Trata-se de decidir o que faz
+      sentido levar, o que precisa ser transformado e o que pode nascer especificamente para uma
+      experiência de APP.
+    </p>
+</section>
+<!-- 14 — O que estou levando ------------------------------------------------------------------------------------ -->
+<section aria-labelledby="aprendizado" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="rule-top pt-10 sm:pt-12">
+<p class="label mb-6">O que estou levando deste trabalho</p>
+<h2 class="display text-[clamp(1.75rem,4vw,2.75rem)] max-w-[24ch]" id="aprendizado">
+        Adaptar uma experiência para mobile não é reduzir uma interface. É reconsiderar
+        prioridades.
+      </h2>
+<div class="prose mt-8 max-w-[62ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+          A iônica V3 reforçou para mim que espaço reduzido, acessibilidade, contexto de uso e
+          capacidades do dispositivo não são restrições que entram depois da solução. São parte
+          daquilo que define a solução.
+        </p>
+<p>
+          Em um produto complexo e multiperfil, evoluir o APP também significa equilibrar o que já
+          existe, o que vem de outras plataformas e aquilo que pode nascer especificamente para uma
+          experiência mobile.
+        </p>
+</div>
+</div>
+</section>
+<!-- Navegação entre cases ------------------------------------------------------------------------------------------ -->
+<nav aria-label="Navegação entre cases" class="rule-top mt-16 sm:mt-24 lg:mt-32 pt-10 pb-4 flex flex-wrap items-end justify-between gap-x-6 gap-y-5">
+<a class="nav-link mono text-[0.8125rem] font-medium" href="../index.html">
+<span aria-hidden="true" class="arrow">←</span> Todos os cases
+    </a>
+<a class="nav-link nav-next text-right" href="./ionica-home.html">
+<span class="block text-[1.0625rem] sm:text-[1.25rem] font-semibold" style="color: var(--ink);">
+        Próximo case · Evolução da Home iônica web V1 <span aria-hidden="true" class="arrow">→</span>
+</span>
+<span class="block mono mt-2 text-[0.75rem]" style="color: var(--ink-faint);">
+        Pesquisa comportamental · Mapas de calor · Arquitetura da informação
+      </span>
+</a>
+</nav>
+<footer class="rule-top mt-12 sm:mt-16 py-8 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+<span class="label">Rê Trocoli · Product Designer Sênior</span>
+<span class="label mono">© 2026</span>
+</footer>
+</div>
+<script>
+  // Abrir sempre no topo: o navegador (e o visualizador de artifacts) tende a restaurar
+  // a posição de rolagem anterior ao navegar entre as páginas do portfólio.
+  (function () {
+    try { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; } catch (e) {}
+    function toTop() {
+      if (location.hash) return; // respeita links âncora
+      window.scrollTo(0, 0);
+      if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
+    }
+    toTop();
+    window.addEventListener("pageshow", toTop);
+    window.addEventListener("load", toTop);
+  })();
+</script>
+</body>
+</html>

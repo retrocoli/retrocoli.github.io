@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Eleições Estadão — Rê Trocoli</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --ground:      #F8F9FA;
+    --ground-soft: #F1F2F4;
+    --ink:         #1A1A1A;
+    --ink-muted:   #6A6F76;
+    --ink-faint:   #9AA0A7;
+    --rule:        #DFE2E6;
+    --accent:      #2E4A62;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #131517;
+      --ground-soft: #191C1F;
+      --ink:         #ECEDEF;
+      --ink-muted:   #949AA2;
+      --ink-faint:   #6B7178;
+      --rule:        #2A2E33;
+      --accent:      #93B4CE;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #131517;
+    --ground-soft: #191C1F;
+    --ink:         #ECEDEF;
+    --ink-muted:   #949AA2;
+    --ink-faint:   #6B7178;
+    --rule:        #2A2E33;
+    --accent:      #93B4CE;
+  }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .mono {
+    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .label {
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  h1, h2, h3 { text-wrap: balance; }
+
+  .display { font-weight: 700; letter-spacing: -0.035em; line-height: 0.96; }
+
+  .rule-top { border-top: 1px solid var(--rule); }
+
+  /* Navegação ---------------------------------------------------------------- */
+  .nav-link { color: var(--ink-muted); text-decoration: none; transition: color 200ms ease; }
+  .nav-link:hover { color: var(--accent); }
+  .nav-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+  .nav-link .arrow { display: inline-block; transition: transform 220ms ease; }
+  .nav-link:hover .arrow { transform: translateX(-0.2rem); }
+  .nav-next:hover .arrow { transform: translateX(0.2rem); }
+
+  /* Tags ---------------------------------------------------------------------- */
+  .tag {
+    font-size: 0.75rem;
+    line-height: 1;
+    padding: 0.375rem 0.5625rem;
+    border-radius: 4px;
+    background: var(--ground-soft);
+    color: var(--ink-muted);
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.375rem; }
+
+  /* Placeholders --------------------------------------------------------------- */
+  figure { margin: 0; }
+  .shot {
+    border-radius: 10px;
+    background: var(--ground-soft);
+    border: 1px solid var(--rule);
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 1.75rem 1.25rem;
+  }
+  .shot img { width: 100%; height: auto; display: block; border-radius: 10px; }
+  .shot-note { font-size: 0.8125rem; line-height: 1.5; color: var(--ink-faint); max-width: 34ch; }
+  .shot-note-sm { font-size: 0.75rem; line-height: 1.45; color: var(--ink-faint); max-width: 24ch; }
+  figcaption { margin-top: 0.75rem; font-size: 0.8125rem; line-height: 1.55; color: var(--ink-muted); }
+
+  /* Destaque editorial ---------------------------------------------------------- */
+  .pull {
+    border-left: 2px solid var(--rule);
+    padding-left: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.35;
+    color: var(--ink);
+  }
+
+  /* Cadeia / passos -------------------------------------------------------------- */
+  .chain { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.625rem; list-style: none; margin: 0; padding: 0; }
+  .chain li { display: flex; align-items: center; gap: 0.625rem; }
+  .chain .step {
+    font-size: 0.8125rem;
+    line-height: 1;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .chain .sep { color: var(--ink-faint); }
+
+  /* Dimensões do desafio / aprendizados ------------------------------------------- */
+  .dims { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+  @media (min-width: 640px) { .dims { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 3rem; } }
+  .dims li { padding: 1.125rem 0; border-top: 1px solid var(--rule); }
+  .dims dt, .dims .k {
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .dims .d { margin-top: 0.4375rem; font-size: 0.9375rem; line-height: 1.6; color: var(--ink-muted); max-width: 40ch; }
+
+  /* Listas em colunas -------------------------------------------------------------- */
+  .spec-list { columns: 1; column-gap: 4rem; list-style: none; margin: 0; padding: 0; }
+  @media (min-width: 640px) { .spec-list { columns: 2; } }
+  .spec-list li {
+    break-inside: avoid;
+    padding: 0.625rem 0;
+    border-top: 1px solid var(--rule);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--ink-muted);
+  }
+
+  /* Hierarquia numerada ------------------------------------------------------------ */
+  .ranked { list-style: none; margin: 0; padding: 0; counter-reset: r; }
+  .ranked li {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.6875rem 0;
+    border-top: 1px solid var(--rule);
+    counter-increment: r;
+  }
+  .ranked li::before {
+    content: counter(r, decimal-leading-zero);
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    color: var(--ink-faint);
+    min-width: 2rem;
+  }
+  .ranked .name { font-size: 0.9375rem; font-weight: 500; color: var(--ink); }
+
+  /* Escala ------------------------------------------------------------------------- */
+  .facts { list-style: none; margin: 0; padding: 0; }
+  .facts li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    padding: 0.9375rem 0;
+    border-top: 1px solid var(--rule);
+  }
+  .facts .k { font-size: 0.6875rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-faint); }
+  .facts .v { font-size: clamp(1rem, 1.8vw, 1.25rem); font-weight: 600; letter-spacing: -0.02em; color: var(--ink); text-align: right; }
+
+  .prose { color: var(--ink-muted); line-height: 1.7; }
+  .prose p + p { margin-top: 1.125rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    .nav-link .arrow { transform: none !important; }
+  }
+</style>
+<meta content="Nas eleições municipais de 2024, fui responsável pelo projeto completo da experiência digital de eleições do Estadão — da investigação inicial ao design final das interfaces." name="description"/>
+<meta content="website" property="og:type"/>
+<meta content="Eleições Estadão — Rê Trocoli" property="og:title"/>
+<meta content="Nas eleições municipais de 2024, fui responsável pelo projeto completo da experiência digital de eleições do Estadão — da investigação inicial ao design final das interfaces." property="og:description"/>
+<meta content="pt_BR" property="og:locale"/>
+<meta content="#F8F9FA" name="theme-color"/>
+<link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231A1A1A'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-family='Inter,Arial,sans-serif' font-weight='600' font-size='30' fill='%23F8F9FA'%3ERT%3C/text%3E%3C/svg%3E" rel="icon"/>
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="mx-auto w-full max-w-[76rem] px-5 sm:px-8 lg:px-12">
+<!-- Topo ------------------------------------------------------------------------ -->
+<header class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 py-6 sm:py-8">
+<a class="nav-link mono text-[0.8125rem] font-medium" href="../index.html">
+<span aria-hidden="true" class="arrow">←</span> Todos os cases
+    </a>
+<a class="nav-link mono text-[0.8125rem] font-medium" href="../index.html" style="color: var(--ink);">Rê Trocoli</a>
+</header>
+<!-- 1. Hero ---------------------------------------------------------------------- -->
+<section class="rule-top pt-10 pb-10 sm:pt-14 sm:pb-12 lg:pt-20">
+<p class="label mb-8 sm:mb-10">Estadão · Product Design</p>
+<div class="grid gap-x-16 gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-end">
+<h1 class="display text-[clamp(2.25rem,6.5vw,4.5rem)] max-w-[12ch]">
+        Eleições Estadão
+      </h1>
+<div class="lg:pb-2">
+<p class="max-w-[46ch] text-[clamp(1.0625rem,1.4vw,1.3125rem)] leading-[1.6]" style="color: var(--ink-muted);">
+          Um sistema editorial para conhecer candidatos e acompanhar resultados.
+        </p>
+<p class="mono mt-6 text-[0.8125rem] leading-[1.75]" style="color: var(--ink-faint);">
+          Estadão · Eleições municipais de 2024 · Product Design<br/>
+          Pesquisa exploratória · UX/UI · Desktop, tablet e mobile
+        </p>
+</div>
+</div>
+</section>
+<!-- IMAGEM 01 — abertura composta ------------------------------------------------ -->
+<figure class="pb-16 sm:pb-24">
+<div class="shot">
+<img alt="Módulo de apuração das Eleições 2024 na home do Estadão, em mobile e desktop, com percentual de urnas apuradas, candidatos à prefeitura de São Paulo e legenda de status" src="img/eleicoes-01-abertura.png"/>
+</div>
+</figure>
+<!-- 2. Visão geral ---------------------------------------------------------------- -->
+<section aria-labelledby="visao-geral" class="rule-top pt-14 sm:pt-20">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">01</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[14ch]" id="visao-geral">
+          Visão geral
+        </h2>
+</div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+          Nas eleições municipais de 2024, fui responsável pelo projeto completo da experiência
+          digital de eleições do Estadão — da investigação inicial ao design final das interfaces.
+        </p>
+<p>
+          O desafio era transformar um grande volume de cidades, candidatos, cargos e resultados em
+          uma experiência clara e acessível. Mais do que criar uma página de apuração, era
+          necessário construir um sistema capaz de acompanhar diferentes necessidades do leitor
+          antes, durante e depois da votação.
+        </p>
+<p>
+          Conduzi o benchmarking e a pesquisa exploratória, reuni e organizei as informações do
+          produto, analisei referências nacionais e internacionais e propus novos formatos para a
+          cobertura. A partir desses aprendizados, estruturei a arquitetura da informação, os
+          fluxos, os estados da experiência e toda a camada visual.
+        </p>
+<p>
+          A solução reuniu perfis de candidatos, busca por cidade, índices, mapas, listas de
+          vereadores, resultados por partido, componentes de apuração e formatos adaptados para
+          home, matérias e parceiros — em versões desktop e mobile.
+        </p>
+</div>
+</div>
+</section>
+<!-- 3. O desafio ------------------------------------------------------------------- -->
+<section aria-labelledby="desafio" class="pt-16 sm:pt-24 lg:pt-28">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">02</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[14ch]" id="desafio">
+          O desafio
+        </h2>
+</div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+          Uma cobertura eleitoral não é uma experiência estática. As informações mudam ao longo do
+          processo e precisam responder a diferentes intenções: conhecer candidatos, encontrar uma
+          cidade, acompanhar a contagem dos votos ou analisar o resultado final.
+        </p>
+<p>
+          O projeto precisava organizar essa complexidade sem sobrecarregar o leitor e, ao mesmo
+          tempo, manter precisão, neutralidade e confiança.
+        </p>
+</div>
+</div>
+<ul class="dims mt-12 sm:mt-14">
+<li>
+<p class="k">Escala</p>
+<p class="d">Milhares de cidades, candidatos e cargos disputados ao mesmo tempo.</p>
+</li>
+<li>
+<p class="k">Tempo</p>
+<p class="d">A informação muda antes, durante e depois da votação.</p>
+</li>
+<li>
+<p class="k">Estado</p>
+<p class="d">Nem todo dado está disponível: a experiência precisa funcionar incompleta.</p>
+</li>
+<li>
+<p class="k">Distribuição</p>
+<p class="d">O mesmo conteúdo precisa aparecer na home, em matérias e em parceiros.</p>
+</li>
+</ul>
+</section>
+<!-- 4. Minha responsabilidade -------------------------------------------------------- -->
+<section aria-labelledby="responsabilidade" class="pt-16 sm:pt-24 lg:pt-28">
+<div class="rule-top pt-10 grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">03</p>
+<h2 class="display text-[clamp(1.5rem,2.8vw,2rem)] max-w-[14ch]" id="responsabilidade">
+          Minha responsabilidade
+        </h2>
+<p class="prose mt-6 max-w-[38ch] text-[1rem]">
+          Fui responsável pelo projeto completo, desde a investigação das referências e organização
+          das informações até a definição da experiência e o desenho final das interfaces.
+        </p>
+</div>
+<ul class="spec-list">
+<li>Benchmarking</li>
+<li>Pesquisa exploratória</li>
+<li>Organização das informações</li>
+<li>Arquitetura da informação</li>
+<li>Jornadas e fluxos</li>
+<li>UX</li>
+<li>UI</li>
+<li>Responsividade</li>
+<li>Componentes</li>
+<li>Aplicações editoriais</li>
+</ul>
+</div>
+</section>
+<!-- 5. Benchmarking ------------------------------------------------------------------- -->
+<section aria-labelledby="bench" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">04</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[18ch]" id="bench">
+          Entendendo como diferentes produtos transformavam dados em informação
+        </h2>
+</div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+          Analisei experiências nacionais e internacionais para entender como diferentes produtos
+          apresentavam candidatos, localidades, mapas e resultados.
+        </p>
+<p>
+          A investigação também incluiu formatos de comparação, debates, checagem de declarações,
+          jogos e simulações. O objetivo não era apenas identificar padrões de interface, mas
+          ampliar as possibilidades para a cobertura eleitoral do Estadão.
+        </p>
+</div>
+</div>
+<div class="mt-10 sm:mt-12 grid gap-8 sm:gap-10 sm:grid-cols-2 lg:grid-cols-4">
+<div>
+<p class="label mb-2">Frente 01</p>
+<p class="text-[0.9375rem] font-medium">Apuração e resultados</p>
+</div>
+<div>
+<p class="label mb-2">Frente 02</p>
+<p class="text-[0.9375rem] font-medium">Perfis e comparação de candidatos</p>
+</div>
+<div>
+<p class="label mb-2">Frente 03</p>
+<p class="text-[0.9375rem] font-medium">Mapas e leitura territorial</p>
+</div>
+<div>
+<p class="label mb-2">Frente 04</p>
+<p class="text-[0.9375rem] font-medium">Engajamento e formatos experimentais</p>
+</div>
+</div>
+<!-- IMAGENS 02–07 — curadoria de referências do benchmark -->
+
+</section>
+<!-- 6. Síntese ------------------------------------------------------------------------- -->
+<section aria-labelledby="sintese" class="pt-16 sm:pt-24 lg:pt-32">
+<p class="label mono mb-5">05</p>
+<h2 class="display text-[clamp(1.75rem,4vw,2.75rem)] max-w-[16ch]" id="sintese">
+      O que a investigação mostrou
+    </h2>
+<ul class="dims mt-10 sm:mt-12">
+<li>
+<p class="k">A cidade orienta a experiência</p>
+<p class="d">O conteúdo relevante depende da localidade do leitor.</p>
+</li>
+<li>
+<p class="k">A informação precisa ser progressiva</p>
+<p class="d">Localidade, cargo, turno e estágio da apuração precisam ser compreendidos antes dos detalhes.</p>
+</li>
+<li>
+<p class="k">O produto começa antes da votação</p>
+<p class="d">Perfis e conteúdos editoriais ajudam o leitor a conhecer as candidaturas.</p>
+</li>
+<li>
+<p class="k">Listas e mapas são complementares</p>
+<p class="d">Listas facilitam consulta e comparação; mapas revelam padrões territoriais.</p>
+</li>
+<li>
+<p class="k">Estados incompletos precisam ser projetados</p>
+<p class="d">A experiência deve funcionar antes dos dados, durante a apuração e após o resultado.</p>
+</li>
+<li>
+<p class="k">O conteúdo precisa circular</p>
+<p class="d">As informações devem ser adaptadas para home, matérias, parceiros e diferentes telas.</p>
+</li>
+</ul>
+</section>
+<!-- 7. A jornada eleitoral ---------------------------------------------------------------- -->
+<section aria-labelledby="jornada" class="pt-16 sm:pt-24 lg:pt-32">
+<p class="label mono mb-5">06</p>
+<h2 class="display text-[clamp(1.75rem,4vw,2.75rem)] max-w-[14ch]" id="jornada">
+      A jornada eleitoral
+    </h2>
+<div class="mt-10 sm:mt-12 grid gap-10 sm:gap-8 md:grid-cols-3">
+<div class="rule-top pt-6">
+<p class="label mb-4">Antes da votação</p>
+<ul class="text-[0.9375rem] leading-[1.7]" style="color: var(--ink-muted);">
+<li>Encontrar a cidade</li>
+<li>Conhecer candidatos</li>
+<li>Consultar perfis</li>
+<li>Explorar informações eleitorais</li>
+</ul>
+</div>
+<div class="rule-top pt-6">
+<p class="label mb-4">Durante a apuração</p>
+<ul class="text-[0.9375rem] leading-[1.7]" style="color: var(--ink-muted);">
+<li>Acompanhar percentual de urnas</li>
+<li>Ver posições</li>
+<li>Alternar entre cargos</li>
+<li>Entender estados provisórios</li>
+<li>Identificar segundo turno ou eleição definida</li>
+</ul>
+</div>
+<div class="rule-top pt-6">
+<p class="label mb-4">Depois do resultado</p>
+<ul class="text-[0.9375rem] leading-[1.7]" style="color: var(--ink-muted);">
+<li>Consultar eleitos</li>
+<li>Encontrar vereadores</li>
+<li>Ver resultados por partido</li>
+<li>Explorar mapas e padrões territoriais</li>
+</ul>
+</div>
+</div>
+<!-- IMAGEM 08 — telas dos três momentos -->
+
+</section>
+<!-- 8. Arquitetura do produto ----------------------------------------------------------------- -->
+<section aria-labelledby="arquitetura" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">07</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[14ch]" id="arquitetura">
+          Arquitetura do produto
+        </h2>
+</div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+          Em vez de uma única página extensa, organizei a cobertura como um sistema de pontos de
+          entrada conectados. O leitor poderia iniciar pela busca, por uma matéria, pela home ou
+          pelo perfil de um candidato e continuar explorando o mesmo ecossistema.
+        </p>
+</div>
+</div>
+<ul aria-label="Percurso principal" class="chain mt-10 sm:mt-12">
+<li><span class="step">Busca ou índice</span><span aria-hidden="true" class="sep">→</span></li>
+<li><span class="step">Cidade</span><span aria-hidden="true" class="sep">→</span></li>
+<li><span class="step">Candidatos</span><span aria-hidden="true" class="sep">→</span></li>
+<li><span class="step">Perfil</span><span aria-hidden="true" class="sep">→</span></li>
+<li><span class="step">Apuração</span><span aria-hidden="true" class="sep">→</span></li>
+<li><span class="step">Mapas e resultados</span></li>
+</ul>
+<div class="mt-8">
+<p class="label mb-3">Pontos de entrada conectados</p>
+<div class="tags">
+<span class="tag">Home</span>
+<span class="tag">Matérias</span>
+<span class="tag">Widgets</span>
+<span class="tag">Parceiros</span>
+<span class="tag">Conteúdos relacionados</span>
+</div>
+</div>
+</section>
+<!-- 9. Busca e localização ---------------------------------------------------------------------- -->
+<section aria-labelledby="busca" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">08</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[14ch]" id="busca">
+          Busca e localização
+        </h2>
+</div>
+<div>
+<p class="pull max-w-[46ch] text-[clamp(1.0625rem,2vw,1.375rem)]">
+          A seleção da cidade funciona como contexto para toda a experiência, reduzindo o volume
+          inicial de informação e aproximando o conteúdo da realidade do leitor.
+        </p>
+<div class="tags mt-7">
+<span class="tag">Sem cidade selecionada</span>
+<span class="tag">Campo de busca</span>
+<span class="tag">Busca expandida</span>
+<span class="tag">Cidade escolhida</span>
+<span class="tag">Índice de localidades</span>
+<span class="tag">Sem localização</span>
+</div>
+</div>
+</div>
+<!-- IMAGENS 09–10 — sequência de estados + mobile -->
+
+</section>
+<!-- 10. Perfis de candidatos -------------------------------------------------------------------- -->
+<section aria-labelledby="perfis" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">09</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[14ch]" id="perfis">
+          Perfis de candidatos
+        </h2>
+</div>
+<div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+            Os perfis foram pensados para reunir informações eleitorais e conteúdo jornalístico numa
+            mesma experiência. A estrutura precisava acomodar cargos e quantidades de informação
+            diferentes sem perder consistência.
+          </p>
+</div>
+<div class="tags mt-7">
+<span class="tag">Prefeito</span>
+<span class="tag">Vice</span>
+<span class="tag">Vereador</span>
+<span class="tag">Biografia</span>
+<span class="tag">Informações eleitorais</span>
+<span class="tag">Pesquisas</span>
+<span class="tag">Conteúdo relacionado</span>
+<span class="tag">Estados expandidos</span>
+</div>
+</div>
+</div>
+<!-- IMAGENS 11–12 — perfil desktop/mobile + evolução 2022→2024 -->
+
+</section>
+<!-- 11. Apuração ------------------------------------------------------------------------------- -->
+<section aria-labelledby="apuracao" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">10</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[14ch]" id="apuracao">
+          Apuração
+        </h2>
+<p class="prose mt-6 max-w-[38ch] text-[1rem]">
+          Durante a contagem, a ordem em que a informação aparece é o que sustenta a confiança: o
+          leitor precisa saber onde está e quanto já foi apurado antes de interpretar qualquer
+          número.
+        </p>
+</div>
+<ol class="ranked">
+<li><span class="name">Cidade</span></li>
+<li><span class="name">Turno</span></li>
+<li><span class="name">Percentual de urnas apuradas</span></li>
+<li><span class="name">Cargo</span></li>
+<li><span class="name">Candidatos</span></li>
+<li><span class="name">Votos e percentuais</span></li>
+<li><span class="name">Status eleitoral</span></li>
+<li><span class="name">Resultados complementares</span></li>
+</ol>
+</div>
+<div class="mt-10">
+<p class="label mb-3">Estados projetados</p>
+<div class="tags">
+<span class="tag">Em andamento</span>
+<span class="tag">Eleito</span>
+<span class="tag">Reeleito</span>
+<span class="tag">Segundo turno</span>
+<span class="tag">Resultado ainda indefinido</span>
+</div>
+</div>
+<!-- IMAGENS 13–14 — apuração completa + detalhe ampliado -->
+
+
+</section>
+<!-- 12. Mapas e resultados ------------------------------------------------------------------------ -->
+<section aria-labelledby="mapas" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">11</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[16ch]" id="mapas">
+          Mapas e resultados detalhados
+        </h2>
+</div>
+<div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+            Enquanto as listas facilitavam a consulta objetiva, os mapas permitiam compreender a
+            dimensão territorial do resultado. As duas formas de visualização foram tratadas como
+            complementares.
+          </p>
+</div>
+<div class="tags mt-7">
+<span class="tag">Resultado para prefeito</span>
+<span class="tag">Vereadores</span>
+<span class="tag">Resultado por partido</span>
+<span class="tag">Ordenação por votação</span>
+<span class="tag">Ordenação alfabética</span>
+<span class="tag">Sem localização</span>
+</div>
+</div>
+</div>
+<!-- IMAGENS 15–16 — mapa + lista lado a lado -->
+
+</section>
+<!-- 13. Produto distribuído ------------------------------------------------------------------------- -->
+<section aria-labelledby="distribuido" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">12</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[14ch]" id="distribuido">
+          Um produto distribuído
+        </h2>
+</div>
+<div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+            Os dados eleitorais precisavam acompanhar o leitor dentro do ecossistema editorial. Por
+            isso, a solução foi adaptada para diferentes superfícies, mantendo a mesma lógica de
+            leitura em formatos mais compactos.
+          </p>
+</div>
+<div class="tags mt-7">
+<span class="tag">Página especial</span>
+<span class="tag">Home</span>
+<span class="tag">Matérias</span>
+<span class="tag">Três colunas</span>
+<span class="tag">Quatro colunas</span>
+<span class="tag">Parceiros</span>
+<span class="tag">Tooltips</span>
+<span class="tag">Manchetes</span>
+<span class="tag">Com e sem fotografia</span>
+</div>
+</div>
+</div>
+<!-- IMAGEM 17 — o mesmo dado em superfícies diferentes -->
+
+</section>
+<!-- 14. Sistema de componentes ------------------------------------------------------------------------ -->
+<section aria-labelledby="componentes" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">13</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[14ch]" id="componentes">
+          Sistema de componentes
+        </h2>
+</div>
+<div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+            Para sustentar diferentes páginas, cargos, estados e tamanhos de tela, organizei a
+            interface a partir de padrões reutilizáveis. Isso permitia manter consistência sem
+            limitar as necessidades específicas de cada contexto editorial.
+          </p>
+</div>
+<div class="tags mt-7">
+<span class="tag">Card de candidato</span>
+<span class="tag">Busca</span>
+<span class="tag">Filtro</span>
+<span class="tag">Status eleitoral</span>
+<span class="tag">Barra de resultado</span>
+<span class="tag">Tooltip</span>
+<span class="tag">Lista</span>
+<span class="tag">Widget</span>
+<span class="tag">Módulo de mapa</span>
+</div>
+</div>
+</div>
+<!-- IMAGEM 18 — biblioteca de componentes -->
+
+</section>
+<!-- 15. Responsividade e casos extremos ------------------------------------------------------------------ -->
+<section aria-labelledby="responsivo" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">14</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[16ch]" id="responsivo">
+          Responsividade e casos extremos
+        </h2>
+</div>
+<div>
+<p class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+          Em telas menores, a decisão não é o que cabe, e sim o que precisa ser lido primeiro —
+          especialmente quando a lista é longa, a foto não existe ou o dado ainda não chegou.
+        </p>
+<ul class="spec-list mt-7">
+<li>Reorganização da hierarquia</li>
+<li>Listas extensas</li>
+<li>Diferentes quantidades de candidatos</li>
+<li>Conteúdo com e sem imagem</li>
+<li>Busca aberta e fechada</li>
+<li>Ausência de localização</li>
+<li>Estados provisórios</li>
+<li>Páginas longas</li>
+</ul>
+</div>
+</div>
+<!-- IMAGENS 19–20 — três larguras + casos extremos -->
+
+
+</section>
+<!-- 16. Escala da solução ---------------------------------------------------------------------------- -->
+<section aria-labelledby="escala" class="pt-16 sm:pt-24 lg:pt-32">
+<p class="label mono mb-5">15</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[14ch]" id="escala">
+      Escala da solução
+    </h2>
+<ul class="facts mt-10 max-w-[58rem]">
+<li><span class="k">Perfis</span><span class="v">Prefeito, vice e vereador</span></li>
+<li><span class="k">Entrada</span><span class="v">Busca por cidade e índice de localidades</span></li>
+<li><span class="k">Resultados</span><span class="v">Apuração, mapas e resultados por partido</span></li>
+<li><span class="k">Distribuição</span><span class="v">Página especial, home, matérias e parceiros</span></li>
+<li><span class="k">Telas</span><span class="v">Desktop, tablet e mobile</span></li>
+<li><span class="k">Interface</span><span class="v">Uma biblioteca de componentes com múltiplos estados</span></li>
+</ul>
+</section>
+<!-- 17. Aprendizados ---------------------------------------------------------------------------------- -->
+<section aria-labelledby="aprendizados" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="rule-top pt-10 sm:pt-12">
+<p class="label mb-6">O que ficou</p>
+<h2 class="display text-[clamp(1.75rem,4vw,2.75rem)] max-w-[24ch]" id="aprendizados">
+        Os dados mudam em tempo real. A interface precisa continuar previsível.
+      </h2>
+<div class="prose mt-8 max-w-[62ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+          Projetar uma cobertura eleitoral exige equilibrar precisão, velocidade e clareza. Os dados
+          mudam em tempo real, mas a interface precisa continuar previsível e confiável.
+        </p>
+<p>
+          O projeto reforçou a importância de pensar em sistemas, não em páginas isoladas. Busca,
+          perfis, apuração, mapas e componentes editoriais precisavam funcionar individualmente e,
+          ao mesmo tempo, formar uma experiência coerente.
+        </p>
+<p>
+          Também mostrou que, em produtos orientados por dados, estados incompletos e situações
+          excepcionais não são casos secundários: fazem parte da experiência principal.
+        </p>
+</div>
+</div>
+</section>
+<!-- Navegação entre cases ------------------------------------------------------------------------------- -->
+<nav aria-label="Navegação entre cases" class="rule-top mt-16 sm:mt-24 lg:mt-32 pt-10 pb-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-4">
+<a class="nav-link mono text-[0.8125rem] font-medium" href="../index.html">
+<span aria-hidden="true" class="arrow">←</span> Todos os cases
+    </a>
+<a class="nav-link nav-next text-[1.0625rem] sm:text-[1.25rem] font-semibold" href="./ionica-v3.html" style="color: var(--ink);">Primeiro case · iônica V3 APP <span aria-hidden="true" class="arrow">→</span></a>
+</nav>
+<footer class="rule-top mt-12 sm:mt-16 py-8 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+<span class="label">Rê Trocoli · Product Designer Sênior</span>
+<span class="label mono">© 2026</span>
+</footer>
+</div>
+<script>
+  // Abrir sempre no topo: o navegador (e o visualizador de artifacts) tende a restaurar
+  // a posição de rolagem anterior ao navegar entre as páginas do portfólio.
+  (function () {
+    try { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; } catch (e) {}
+    function toTop() {
+      if (location.hash) return; // respeita links âncora
+      window.scrollTo(0, 0);
+      if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
+    }
+    toTop();
+    window.addEventListener("pageshow", toTop);
+    window.addEventListener("load", toTop);
+  })();
+</script>
+</body>
+</html>

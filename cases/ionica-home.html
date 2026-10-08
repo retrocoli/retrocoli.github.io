@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>iônica — Evolução da Home — Rê Trocoli</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --ground:      #F8F9FA;
+    --ground-soft: #F1F2F4;
+    --ink:         #1A1A1A;
+    --ink-muted:   #6A6F76;
+    --ink-faint:   #9AA0A7;
+    --rule:        #DFE2E6;
+    --accent:      #2E4A62;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #131517;
+      --ground-soft: #191C1F;
+      --ink:         #ECEDEF;
+      --ink-muted:   #949AA2;
+      --ink-faint:   #6B7178;
+      --rule:        #2A2E33;
+      --accent:      #93B4CE;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #131517;
+    --ground-soft: #191C1F;
+    --ink:         #ECEDEF;
+    --ink-muted:   #949AA2;
+    --ink-faint:   #6B7178;
+    --rule:        #2A2E33;
+    --accent:      #93B4CE;
+  }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .mono {
+    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .label {
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  h1, h2, h3 { text-wrap: balance; }
+
+  .display { font-weight: 700; letter-spacing: -0.035em; line-height: 0.96; }
+
+  .rule-top { border-top: 1px solid var(--rule); }
+
+  /* Navegação ---------------------------------------------------------------- */
+  .nav-link { color: var(--ink-muted); text-decoration: none; transition: color 200ms ease; }
+  .nav-link:hover { color: var(--accent); }
+  .nav-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+  .nav-link .arrow { display: inline-block; transition: transform 220ms ease; }
+  .nav-link:hover .arrow { transform: translateX(-0.2rem); }
+  .nav-next:hover .arrow { transform: translateX(0.2rem); }
+
+  /* Tags ---------------------------------------------------------------------- */
+  .tag {
+    font-size: 0.75rem;
+    line-height: 1;
+    padding: 0.375rem 0.5625rem;
+    border-radius: 4px;
+    background: var(--ground-soft);
+    color: var(--ink-muted);
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.375rem; }
+
+  /* Placeholders --------------------------------------------------------------- */
+  figure { margin: 0; }
+  .shot {
+    border-radius: 10px;
+    background: var(--ground-soft);
+    border: 1px solid var(--rule);
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 1.75rem 1.25rem;
+    position: relative;
+  }
+  .shot img { width: 100%; height: auto; display: block; border-radius: 10px; }
+  .shot-note { font-size: 0.8125rem; line-height: 1.5; color: var(--ink-faint); max-width: 34ch; }
+  .shot-note-sm { font-size: 0.75rem; line-height: 1.45; color: var(--ink-faint); max-width: 24ch; }
+  figcaption { margin-top: 0.75rem; font-size: 0.8125rem; line-height: 1.55; color: var(--ink-muted); }
+
+  /* Destaque editorial ---------------------------------------------------------- */
+  .pull {
+    border-left: 2px solid var(--rule);
+    padding-left: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.35;
+    color: var(--ink);
+  }
+
+  /* Nota discreta ---------------------------------------------------------------- */
+  .note {
+    border-left: 2px solid var(--rule);
+    padding-left: 1.125rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--ink-faint);
+    max-width: 56ch;
+  }
+
+  /* Listas em colunas -------------------------------------------------------------- */
+  .spec-list { columns: 1; column-gap: 4rem; list-style: none; margin: 0; padding: 0; }
+  @media (min-width: 640px) { .spec-list { columns: 2; } }
+  .spec-list li {
+    break-inside: avoid;
+    padding: 0.5625rem 0;
+    border-top: 1px solid var(--rule);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--ink-muted);
+  }
+
+  /* Blocos rotulados (fontes, princípios, perfis) ------------------------------------ */
+  .blocks { list-style: none; margin: 0; padding: 0; display: grid; gap: 0 3rem; }
+  @media (min-width: 640px) { .blocks.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 900px) { .blocks.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .blocks li { padding: 1.125rem 0; border-top: 1px solid var(--rule); }
+  .blocks .k {
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .blocks .d { margin-top: 0.4375rem; font-size: 0.9375rem; line-height: 1.6; color: var(--ink-muted); max-width: 44ch; }
+
+  /* Evidência → interpretação ---------------------------------------------------------- */
+  .finding { border-top: 1px solid var(--rule); padding: 1.5rem 0; }
+  .finding h3 {
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+    font-size: clamp(1.0625rem, 1.7vw, 1.25rem);
+    max-width: 30ch;
+  }
+  .finding .pair { display: grid; gap: 1rem 3rem; margin-top: 0.875rem; }
+  @media (min-width: 720px) { .finding .pair { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .finding .pair .t {
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .finding .pair p { margin: 0.375rem 0 0; font-size: 0.9375rem; line-height: 1.65; color: var(--ink-muted); max-width: 46ch; }
+
+  /* Evidência → decisão (tabela responsiva) ---------------------------------------------- */
+  .decisions { list-style: none; margin: 0; padding: 0; }
+  .decisions li {
+    border-top: 1px solid var(--rule);
+    padding: 1.125rem 0;
+    display: grid;
+    gap: 0.5rem 3rem;
+  }
+  @media (min-width: 720px) {
+    .decisions li { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: baseline; }
+  }
+  .decisions .ev { font-size: 0.9375rem; line-height: 1.55; color: var(--ink-muted); }
+  .decisions .de { font-size: 0.9375rem; line-height: 1.55; color: var(--ink); font-weight: 500; }
+  .decisions .de::before {
+    content: "→ ";
+    color: var(--ink-faint);
+    font-weight: 400;
+  }
+  @media (min-width: 720px) { .decisions .de::before { content: ""; } }
+  .decisions-head { display: none; }
+  @media (min-width: 720px) {
+    .decisions-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 3rem;
+      padding-bottom: 0.5rem;
+    }
+  }
+
+  /* Escopo da análise ---------------------------------------------------------------------- */
+  .facts { list-style: none; margin: 0; padding: 0; }
+  .facts li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    padding: 0.9375rem 0;
+    border-top: 1px solid var(--rule);
+  }
+  .facts .k { font-size: 0.6875rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-faint); }
+  .facts .v { font-size: clamp(1rem, 1.8vw, 1.25rem); font-weight: 600; letter-spacing: -0.02em; color: var(--ink); text-align: right; }
+
+  /* Hierarquia ordenada ---------------------------------------------------------------------- */
+  .ranked { list-style: none; margin: 0; padding: 0; counter-reset: r; }
+  .ranked li {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.625rem 0;
+    border-top: 1px solid var(--rule);
+    counter-increment: r;
+  }
+  .ranked li::before {
+    content: counter(r, decimal-leading-zero);
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    color: var(--ink-faint);
+    min-width: 2rem;
+  }
+  .ranked .name { font-size: 0.9375rem; font-weight: 500; color: var(--ink); }
+
+  .prose { color: var(--ink-muted); line-height: 1.7; }
+  .prose p + p { margin-top: 1.125rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    .nav-link .arrow { transform: none !important; }
+  }
+</style>
+<meta content="A Home da iônica reunia acessos para Biblioteca, Atividades, Cursos e ferramentas de inteligência artificial. Apesar da quantidade de recursos disponíveis, os dados mostravam que ela não era…" name="description"/>
+<meta content="website" property="og:type"/>
+<meta content="iônica — Evolução da Home — Rê Trocoli" property="og:title"/>
+<meta content="A Home da iônica reunia acessos para Biblioteca, Atividades, Cursos e ferramentas de inteligência artificial. Apesar da quantidade de recursos disponíveis, os dados mostravam que ela não era…" property="og:description"/>
+<meta content="pt_BR" property="og:locale"/>
+<meta content="#F8F9FA" name="theme-color"/>
+<link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231A1A1A'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-family='Inter,Arial,sans-serif' font-weight='600' font-size='30' fill='%23F8F9FA'%3ERT%3C/text%3E%3C/svg%3E" rel="icon"/>
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="mx-auto w-full max-w-[76rem] px-5 sm:px-8 lg:px-12">
+<!-- Topo ------------------------------------------------------------------------ -->
+<header class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 py-6 sm:py-8">
+<a class="nav-link mono text-[0.8125rem] font-medium" href="../index.html">
+<span aria-hidden="true" class="arrow">←</span> Todos os cases
+    </a>
+<a class="nav-link mono text-[0.8125rem] font-medium" href="../index.html" style="color: var(--ink);">Rê Trocoli</a>
+</header>
+<!-- 1. Hero ---------------------------------------------------------------------- -->
+<section class="rule-top pt-10 pb-10 sm:pt-14 sm:pb-12 lg:pt-20">
+<p class="label mb-8 sm:mb-10">FTD Educação · UX/UI</p>
+<div class="grid gap-x-16 gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-end">
+<h1 class="display text-[clamp(2.25rem,6vw,4.25rem)] max-w-[14ch]">
+        iônica — Evolução da Home
+      </h1>
+<div class="lg:pb-2">
+<p class="max-w-[46ch] text-[clamp(1.0625rem,1.4vw,1.3125rem)] leading-[1.6]" style="color: var(--ink-muted);">
+          Transformando dados de comportamento em uma experiência orientada à ação.
+        </p>
+<p class="mono mt-6 text-[0.8125rem] leading-[1.75]" style="color: var(--ink-faint);">
+          FTD Educação · iônica · 2025–2026<br/>
+          Pesquisa comportamental · UX/UI · Desktop, tablet e mobile
+        </p>
+</div>
+</div>
+</section>
+<!-- IMAGEM 01 — abertura ---------------------------------------------------------- -->
+<figure class="pb-16 sm:pb-24">
+<div class="shot" style="aspect-ratio: 2240 / 1260;">
+<img alt="Nova Home da iônica (perfil professor) em destaque, acompanhada de um recorte de mapa de calor da Home anterior como evidência de pesquisa." src="img/home-01-abertura.png"/>
+</div>
+</figure>
+<!-- 2. Visão geral ---------------------------------------------------------------- -->
+<section aria-labelledby="visao-geral" class="rule-top pt-14 sm:pt-20">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">01</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[14ch]" id="visao-geral">
+          Visão geral
+        </h2>
+</div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+          A Home da iônica reunia acessos para Biblioteca, Atividades, Cursos e ferramentas de
+          inteligência artificial. Apesar da quantidade de recursos disponíveis, os dados mostravam
+          que ela não era utilizada como o principal ponto de partida da plataforma.
+        </p>
+<p>
+          A partir de apontamentos de CSAT, sessões de shadowing e mapas de calor, investiguei como
+          professores e estudantes realmente navegavam pela experiência. A análise revelou uma
+          diferença importante entre a estrutura da interface e o comportamento dos usuários:
+          enquanto a Home apresentava conteúdos e comunicações, as pessoas chegavam à plataforma com
+          tarefas específicas e procuravam o caminho mais rápido para executá-las.
+        </p>
+<p>
+          Fui responsável por analisar as evidências, consolidar os padrões de comportamento, definir
+          os direcionadores da nova experiência e criar os wireframes e as interfaces finais para
+          desktop, tablet e mobile.
+        </p>
+<p>
+          A proposta transformou a Home em um dashboard mais compacto e orientado à ação,
+          priorizando conteúdos recentes, tarefas relevantes e próximos passos.
+        </p>
+</div>
+</div>
+</section>
+<!-- 3. Contexto ---------------------------------------------------------------------- -->
+<section aria-labelledby="contexto" class="pt-16 sm:pt-24 lg:pt-28">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">02</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[14ch]" id="contexto">
+          Um produto já em uso
+        </h2>
+</div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+          Diferentemente de um produto criado do zero, a evolução da Home precisava considerar
+          comportamentos já estabelecidos, diferentes configurações institucionais e funcionalidades
+          distribuídas por toda a plataforma.
+        </p>
+<p>
+          A iônica já era um LMS em operação, com professores e estudantes de necessidades distintas.
+          A Home concentrava funcionalidades importantes, o produto passava por evolução contínua e a
+          estrutura precisaria continuar funcionando durante a transição para o LMS 3.0.
+        </p>
+</div>
+</div>
+</section>
+<!-- 4. O problema ---------------------------------------------------------------------- -->
+<section aria-labelledby="problema" class="pt-16 sm:pt-24 lg:pt-28">
+<p class="label mono mb-5">03</p>
+<h2 class="sr-only" id="problema">O problema</h2>
+<p class="pull max-w-[36ch] text-[clamp(1.5rem,3.6vw,2.375rem)] display">
+      A Home concentrava funcionalidades importantes, mas os usuários frequentemente a ignoravam e
+      recorriam diretamente ao menu lateral.
+    </p>
+<ul aria-label="Sinais iniciais" class="blocks cols-2 mt-12 sm:mt-14">
+<li><p class="k">Baixa percepção de valor</p></li>
+<li><p class="k">Conteúdo relevante abaixo da primeira dobra</p></li>
+<li><p class="k">Destaques visuais com pouca interação</p></li>
+<li><p class="k">Dependência da navegação lateral</p></li>
+</ul>
+</section>
+<!-- 5. Minha responsabilidade ------------------------------------------------------------- -->
+<section aria-labelledby="responsabilidade" class="pt-16 sm:pt-24 lg:pt-28">
+<div class="rule-top pt-10 grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">04</p>
+<h2 class="display text-[clamp(1.5rem,2.8vw,2rem)] max-w-[16ch]" id="responsabilidade">
+          Minha responsabilidade
+        </h2>
+<p class="prose mt-6 max-w-[38ch] text-[1rem]">
+          Atuei como UX Designer, com responsabilidade central sobre a pesquisa comportamental e a
+          construção da experiência. O projeto teve colaboração de produto, conteúdo, design e
+          desenvolvimento.
+        </p>
+</div>
+<ul class="blocks cols-2">
+<li>
+<p class="k">Investigação</p>
+<p class="d">CSAT, planejamento da análise, sessões no Microsoft Clarity e mapas de calor.</p>
+</li>
+<li>
+<p class="k">Síntese</p>
+<p class="d">Consolidação das evidências e identificação de padrões de comportamento.</p>
+</li>
+<li>
+<p class="k">Estratégia</p>
+<p class="d">Formulação de hipóteses e definição dos direcionadores da nova experiência.</p>
+</li>
+<li>
+<p class="k">UX</p>
+<p class="d">Reestruturação da arquitetura da Home e criação dos wireframes.</p>
+</li>
+<li>
+<p class="k">UI</p>
+<p class="d">Interfaces finais, componentes e revisão dos empty states.</p>
+</li>
+<li>
+<p class="k">Responsividade</p>
+<p class="d">Versões para desktop, tablet e mobile.</p>
+</li>
+<li>
+<p class="k">Entrega e evolução</p>
+<p class="d">Preparação para desenvolvimento e adaptação para a convivência com o LMS 3.0.</p>
+</li>
+</ul>
+</div>
+</section>
+<!-- 6. Triangulação -------------------------------------------------------------------------- -->
+<section aria-labelledby="triangulacao" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">05</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[16ch]" id="triangulacao">
+          Três fontes, uma leitura mais completa
+        </h2>
+</div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+          Nenhuma fonte foi interpretada isoladamente. O cruzamento entre percepção, comportamento
+          observado e dados de interação ajudou a diferenciar problemas pontuais de padrões
+          estruturais.
+        </p>
+</div>
+</div>
+<ul class="blocks cols-3 mt-10 sm:mt-12">
+<li>
+<p class="k">CSAT</p>
+<p class="d">Indicava percepções, insatisfações e expectativas relacionadas à Home.</p>
+</li>
+<li>
+<p class="k">Shadowing</p>
+<p class="d">Revelava como professores e estudantes realmente navegavam e quais caminhos priorizavam.</p>
+</li>
+<li>
+<p class="k">Mapas de calor</p>
+<p class="d">Mostravam a recorrência dos comportamentos por meio da concentração de cliques e da exploração da página.</p>
+</li>
+</ul>
+</section>
+<!-- 7. Escopo da análise ---------------------------------------------------------------------- -->
+<section aria-labelledby="escopo" class="pt-16 sm:pt-24 lg:pt-28">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">06</p>
+<h2 class="display text-[clamp(1.5rem,2.8vw,2rem)] max-w-[14ch]" id="escopo">
+          Escopo da análise
+        </h2>
+</div>
+<div>
+<ul class="facts">
+<li><span class="k">Shadowing</span><span class="v">4 a 29 de agosto de 2025</span></li>
+<li><span class="k">Perfis observados</span><span class="v">Professor e estudante</span></li>
+<li><span class="k">Exibições</span><span class="v mono">45.369</span></li>
+<li><span class="k">Cliques</span><span class="v mono">60.921</span></li>
+</ul>
+<p class="note mt-7">
+          Esses números representam a base da análise comportamental, não os resultados posteriores
+          do redesign.
+        </p>
+</div>
+</div>
+</section>
+<!-- 8. O que observamos ------------------------------------------------------------------------ -->
+<section aria-labelledby="observacoes" class="pt-16 sm:pt-24 lg:pt-32">
+<p class="label mono mb-5">07</p>
+<h2 class="display text-[clamp(1.75rem,4vw,2.75rem)] max-w-[14ch]" id="observacoes">
+      O que observamos
+    </h2>
+<div class="mt-10 sm:mt-12">
+<article class="finding">
+<h3>Menu lateral concentrava a navegação</h3>
+<div class="pair">
+<div><p class="t mono">Evidência</p><p>Os maiores volumes de cliques apareciam no menu lateral e na barra superior.</p></div>
+<div><p class="t mono">Interpretação</p><p>A Home era utilizada como passagem; os usuários chegavam procurando uma função específica.</p></div>
+</div>
+</article>
+<article class="finding">
+<h3>Banner ocupava espaço sem gerar ação</h3>
+<div class="pair">
+<div><p class="t mono">Evidência</p><p>Apesar da posição acima da dobra, o banner apresentava baixa interação.</p></div>
+<div><p class="t mono">Interpretação</p><p>Uma área valiosa da tela estava dedicada a uma comunicação pouco relevante para a rotina.</p></div>
+</div>
+</article>
+<article class="finding">
+<h3>Biblioteca e livros respondiam a necessidades imediatas</h3>
+<div class="pair">
+<div><p class="t mono">Evidência</p><p>Biblioteca e livros recentes apareciam repetidamente nos dois perfis.</p></div>
+<div><p class="t mono">Interpretação</p><p>Professores e estudantes queriam retomar materiais já conhecidos.</p></div>
+</div>
+</article>
+<article class="finding">
+<h3>Conteúdo abaixo da dobra era pouco explorado</h3>
+<div class="pair">
+<div><p class="t mono">Evidência</p><p>Atividades, Cursos e próximas entregas recebiam pouca atenção.</p></div>
+<div><p class="t mono">Interpretação</p><p>A hierarquia escondia conteúdos potencialmente relevantes.</p></div>
+</div>
+</article>
+<article class="finding">
+<h3>Empty states interrompiam a jornada</h3>
+<div class="pair">
+<div><p class="t mono">Evidência</p><p>Estados sem conteúdo ocupavam grandes áreas e não ofereciam ações seguintes.</p></div>
+<div><p class="t mono">Interpretação</p><p>A ausência de conteúdo era tratada como fim do fluxo.</p></div>
+</div>
+</article>
+<article class="finding">
+<h3>Ferramentas de IA estavam fragmentadas</h3>
+<div class="pair">
+<div><p class="t mono">Evidência</p><p>Diferentes recursos apareciam em pontos e chamadas distintas.</p></div>
+<div><p class="t mono">Interpretação</p><p>A dispersão dificultava a compreensão do ecossistema de IA.</p></div>
+</div>
+</article>
+</div>
+<!-- IMAGENS 02–03 — mapa de calor e Home anterior -->
+<div class="mt-12 sm:mt-16 grid gap-6 sm:gap-8 lg:grid-cols-2">
+<figure>
+<div class="shot" style="aspect-ratio: 1600 / 1200;">
+<img alt="Mapa de calor da Home anterior da iônica, com maior concentração de cliques no menu lateral e na barra superior" src="img/home-02-heatmap.png"/>
+</div>
+<figcaption>A concentração de cliques fora da área central da Home.</figcaption>
+</figure>
+<figure>
+<div class="shot" style="aspect-ratio: 1600 / 1200;">
+<img alt="Home anterior da iônica anotada: hub central fraco, banner sem entregar valor e ferramentas de IA fragmentadas" src="img/home-03-home-anterior.png"/>
+</div>
+<figcaption>Banner, hub central e ferramentas de IA fragmentadas.</figcaption>
+</figure>
+</div>
+</section>
+<!-- 9. Diferenças entre os perfis --------------------------------------------------------------- -->
+<section aria-labelledby="perfis" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">08</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[16ch]" id="perfis">
+          Diferenças entre os perfis
+        </h2>
+<p class="note mt-6">
+          Padrões observados nas sessões e nos mapas de calor — não personas.
+        </p>
+</div>
+<div class="grid gap-8 sm:grid-cols-2">
+<div>
+<p class="label mb-4">Professor</p>
+<ul class="text-[0.9375rem] leading-[1.75]" style="color: var(--ink-muted);">
+<li>Navegação mais objetiva</li>
+<li>Uso frequente da Busca Inteligente</li>
+<li>Acesso direto à Biblioteca e aos livros</li>
+<li>Necessidade de acompanhar e criar atividades</li>
+<li>Baixa disposição para exploração</li>
+</ul>
+</div>
+<div>
+<p class="label mb-4">Estudante</p>
+<ul class="text-[0.9375rem] leading-[1.75]" style="color: var(--ink-muted);">
+<li>Biblioteca e livros como pontos centrais</li>
+<li>Navegação relativamente mais exploratória</li>
+<li>Acesso pontual a Cursos e Atividades</li>
+<li>Necessidade de visualizar pendências e continuidade</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- 10. Mapa de convergência ----------------------------------------------------------------------- -->
+<section aria-labelledby="convergencia" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">09</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[18ch]" id="convergencia">
+          O problema da Home fazia parte de um padrão maior
+        </h2>
+</div>
+<div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+            O mesmo cruzamento de evidências foi aplicado a outras áreas do produto. Colocadas lado
+            a lado — Home, Atividades, Minhas Questões e Cursos —, elas apontavam para a mesma
+            leitura.
+          </p>
+</div>
+<p class="pull mt-7 max-w-[48ch] text-[clamp(1.0625rem,1.8vw,1.25rem)]">
+          Os usuários apresentavam comportamento orientado à tarefa e buscavam executar ações
+          rapidamente, com pouca exploração. Entretanto, diferentes áreas do produto ainda
+          priorizavam organização e estrutura em vez de ação.
+        </p>
+</div>
+</div>
+<!-- IMAGEM 04 — recorte do mapa de convergência -->
+<figure class="mt-12 sm:mt-16">
+<div class="shot" style="aspect-ratio: 2400 / 1871;">
+<img alt="Mapa de convergência cruzando shadowing, mapa de calor, ponto convergente e oportunidade de melhoria para Home, Atividades, Minhas questões e Cursos, com a linha Home destacada" src="img/home-04-convergencia.png"/>
+</div>
+<figcaption>Shadowing · mapa de calor · ponto convergente · oportunidade de melhoria — a linha Home confirma o mesmo padrão identificado nas demais áreas do produto.</figcaption>
+</figure>
+<p class="note mt-7">
+      Atividades, Minhas Questões e Cursos aparecem aqui apenas como contexto da investigação
+      comportamental. Cada uma teve seu próprio desdobramento, fora do escopo deste case.
+    </p>
+</section>
+<!-- 11. Diagnóstico ---------------------------------------------------------------------------------- -->
+<section aria-labelledby="diagnostico" class="pt-16 sm:pt-24 lg:pt-32">
+<p class="label mono mb-5">10</p>
+<h2 class="sr-only" id="diagnostico">Diagnóstico</h2>
+<p class="pull max-w-[32ch] text-[clamp(1.5rem,3.6vw,2.375rem)] display">
+      A Home não estava alinhada ao modelo mental de usuários orientados à tarefa.
+    </p>
+<div class="mt-10 sm:mt-12">
+<p class="label mb-4">Consequências</p>
+<div class="tags">
+<span class="tag">Baixa exploração</span>
+<span class="tag">Dependência do menu</span>
+<span class="tag">Conteúdo central ignorado</span>
+<span class="tag">Maior esforço de navegação</span>
+<span class="tag">Falta de clareza sobre próximos passos</span>
+<span class="tag">Menor percepção de valor</span>
+</div>
+</div>
+</section>
+<!-- 12. Princípios ------------------------------------------------------------------------------------- -->
+<section aria-labelledby="principios" class="pt-16 sm:pt-24 lg:pt-32">
+<p class="label mono mb-5">11</p>
+<h2 class="display text-[clamp(1.75rem,4vw,2.75rem)] max-w-[16ch]" id="principios">
+      Princípios da nova experiência
+    </h2>
+<ul class="blocks cols-2 mt-10 sm:mt-12">
+<li>
+<p class="k">Orientação à ação</p>
+<p class="d">Cada bloco deveria responder a uma tarefa ou próximo passo.</p>
+</li>
+<li>
+<p class="k">Relevância no primeiro scroll</p>
+<p class="d">O conteúdo mais importante deveria aparecer sem depender de rolagem extensa.</p>
+</li>
+<li>
+<p class="k">Continuidade</p>
+<p class="d">Livros e conteúdos recentes deveriam facilitar a retomada.</p>
+</li>
+<li>
+<p class="k">Clareza contextual</p>
+<p class="d">Títulos e microtextos deveriam explicar o que estava sendo apresentado.</p>
+</li>
+<li>
+<p class="k">Empty states acionáveis</p>
+<p class="d">A ausência de conteúdo deveria oferecer uma ação útil.</p>
+</li>
+<li>
+<p class="k">Adaptação por perfil</p>
+<p class="d">Professor e estudante deveriam receber hierarquias relacionadas às suas necessidades.</p>
+</li>
+<li>
+<p class="k">Menor dependência do menu</p>
+<p class="d">Tarefas recorrentes deveriam poder começar diretamente na Home.</p>
+</li>
+</ul>
+</section>
+<!-- 13. Nova hierarquia ------------------------------------------------------------------------------------ -->
+<section aria-labelledby="hierarquia" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">12</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[14ch]" id="hierarquia">
+          Reestruturando a hierarquia
+        </h2>
+<p class="prose mt-6 max-w-[38ch] text-[1rem]">
+          A nova hierarquia não adicionava mais conteúdo. Ela reorganizava os elementos existentes a
+          partir de relevância, frequência e contexto.
+        </p>
+</div>
+<div class="grid gap-10 sm:grid-cols-2">
+<div>
+<p class="label mb-1">Professor</p>
+<ol class="ranked">
+<li><span class="name">Banner contextual e facultativo</span></li>
+<li><span class="name">Livros recentes</span></li>
+<li><span class="name">Atividades, entregas e correções</span></li>
+<li><span class="name">Cursos ou turmas recentes</span></li>
+<li><span class="name">Acesso às funcionalidades de IA</span></li>
+</ol>
+</div>
+<div>
+<p class="label mb-1">Estudante</p>
+<ol class="ranked">
+<li><span class="name">Banner contextual</span></li>
+<li><span class="name">Continuidade dos livros</span></li>
+<li><span class="name">Atividades pendentes ou corrigidas</span></li>
+<li><span class="name">Cursos recentes</span></li>
+<li><span class="name">CTAs diretos</span></li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+<!-- 14. Wireframes -------------------------------------------------------------------------------------------- -->
+<section aria-labelledby="wireframes" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">13</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[14ch]" id="wireframes">
+          Wireframes
+        </h2>
+</div>
+<div>
+<p class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+          Os wireframes traduziram os princípios em estrutura: módulos horizontais, conteúdo
+          relevante já no primeiro scroll, CTAs diretos, menos áreas vazias e uma ordem definida
+          pelas tarefas de cada perfil.
+        </p>
+<div class="tags mt-7">
+<span class="tag">Módulos horizontais</span>
+<span class="tag">Primeiro scroll</span>
+<span class="tag">CTAs diretos</span>
+<span class="tag">Redução dos vazios</span>
+<span class="tag">Ordem por tarefa</span>
+<span class="tag">Diferenças por perfil</span>
+<span class="tag">Direção para centralizar a IA</span>
+</div>
+</div>
+</div>
+<!-- IMAGENS 05–06 — wireframes professor e estudante -->
+<div class="mt-12 sm:mt-16 grid gap-6 sm:gap-8 lg:grid-cols-2">
+<figure>
+<div class="shot" style="aspect-ratio: 1600 / 1200;">
+<img alt="Wireframe da nova Home do professor, com módulos horizontais e CTAs diretos" src="img/home-05-wireframe-professor.png"/>
+</div>
+<figcaption>Wireframe da Home do Professor.</figcaption>
+</figure>
+<figure>
+<div class="shot" style="aspect-ratio: 1600 / 1200;">
+<img alt="Wireframe da nova Home do estudante, com continuidade dos livros e atividades pendentes" src="img/home-06-wireframe-estudante.png"/>
+</div>
+<figcaption>Wireframe da Home do Estudante.</figcaption>
+</figure>
+</div>
+</section>
+<!-- 15. Da evidência à decisão --------------------------------------------------------------------------------- -->
+<section aria-labelledby="evidencia-decisao" class="pt-16 sm:pt-24 lg:pt-32">
+<p class="label mono mb-5">14</p>
+<h2 class="display text-[clamp(1.75rem,4vw,2.75rem)] max-w-[16ch]" id="evidencia-decisao">
+      Da evidência à decisão
+    </h2>
+<div class="mt-10 sm:mt-12">
+<div aria-hidden="true" class="decisions-head">
+<span class="label">Evidência</span>
+<span class="label">Decisão</span>
+</div>
+<ul class="decisions">
+<li><span class="ev">Banner com baixa interação</span><span class="de">Uso contextual e redução de espaço</span></li>
+<li><span class="ev">Dependência do menu</span><span class="de">Ações recorrentes diretamente na Home</span></li>
+<li><span class="ev">Recorrência de livros</span><span class="de">Continuidade com últimos acessos</span></li>
+<li><span class="ev">Conteúdo abaixo da dobra</span><span class="de">Reorganização das prioridades</span></li>
+<li><span class="ev">Empty states passivos</span><span class="de">CTAs contextuais</span></li>
+<li><span class="ev">IA fragmentada</span><span class="de">Direção para acesso centralizado</span></li>
+</ul>
+</div>
+</section>
+<!-- 16. Solução final ------------------------------------------------------------------------------------------- -->
+<section aria-labelledby="solucao" class="pt-16 sm:pt-24 lg:pt-32">
+<p class="label mono mb-5">15</p>
+<h2 class="display text-[clamp(2rem,4.5vw,3.25rem)] max-w-[14ch]" id="solucao">
+      A nova Home
+    </h2>
+<!-- IMAGEM 07 — visão geral desktop + mobile -->
+<figure class="mt-10 sm:mt-14">
+<div class="shot" style="aspect-ratio: 2240 / 1260;">
+<img alt="Nova Home da iônica para o perfil professor, em desktop e em mobile, com conteúdo preenchido" src="img/home-07-solucao-desktop.png"/>
+</div>
+<figcaption>Desktop e mobile, perfil professor.</figcaption>
+</figure>
+<div class="mt-6 sm:mt-8 grid gap-6 sm:gap-8 lg:grid-cols-2">
+<figure>
+<div class="shot" style="aspect-ratio: 1600 / 924;">
+<img alt="Recorte ampliado do módulo Livros recentes da nova Home, com anotação explicando que os itens exibidos são os últimos materiais acessados pelo usuário, não recomendações" src="img/home-08-modulo.png"/>
+</div>
+<figcaption>Reforçamos que são acessos recentes, não recomendações.</figcaption>
+</figure>
+<figure>
+<div class="shot" style="aspect-ratio: 1600 / 924;">
+<img alt="Novos empty states da Home, com ilustração e ação direta para criar atividade, criar curso ou adicionar livros" src="img/home-09-empty-states.png"/>
+</div>
+<figcaption>A ausência de conteúdo com um próximo passo.</figcaption>
+</figure>
+</div>
+<!-- IMAGEM 11 — antes e depois -->
+<figure class="mt-10 sm:mt-14">
+<div class="shot" style="aspect-ratio: 2240 / 1089;">
+<img alt="Comparação entre a Home anterior e a nova Home da iônica, no mesmo enquadramento" src="img/home-11-antes-depois.png"/>
+</div>
+<figcaption>O que mudou é a ordem, não a quantidade de conteúdo.</figcaption>
+</figure>
+</section>
+<!-- 17. Produto vivo ---------------------------------------------------------------------------------------------- -->
+<section aria-labelledby="produto-vivo" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">16</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[14ch]" id="produto-vivo">
+          Evoluindo um produto vivo
+        </h2>
+</div>
+<div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+            A nova Home não foi tratada como uma entrega isolada. A estrutura precisou continuar
+            evoluindo para conviver com diferentes configurações do LMS e necessidades
+            institucionais.
+          </p>
+</div>
+<div class="tags mt-7">
+<span class="tag">Convivência com o LMS 3.0</span>
+<span class="tag">Configurações de escola</span>
+<span class="tag">Salas e cursos separados</span>
+<span class="tag">Informações contextuais nos cards</span>
+<span class="tag">Novos empty states</span>
+<span class="tag">Adaptações por perfil</span>
+</div>
+</div>
+</div>
+<!-- IMAGEM 12 — adaptações LMS 3.0 -->
+<figure class="mt-12 sm:mt-16">
+<div class="shot" style="aspect-ratio: 2240 / 1260;">
+<img alt="Adaptações da Home para a convivência com o LMS 3.0: aviso de boas-vindas ao recurso Salas e a aba Salas convivendo com Cursos recentes" src="img/home-12-lms3.png"/>
+</div>
+<figcaption>A mesma lógica, em configurações institucionais diferentes — aqui, a chegada de Salas.</figcaption>
+</figure>
+</section>
+<!-- 18. Resultados e legado ---------------------------------------------------------------------------------------- -->
+<section aria-labelledby="resultados" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="rule-top pt-10 grid gap-x-16 gap-y-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mono mb-5">17</p>
+<h2 class="display text-[clamp(1.75rem,3.6vw,2.5rem)] max-w-[14ch]" id="resultados">
+          Resultados e legado
+        </h2>
+</div>
+<div>
+<div class="prose max-w-[58ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+            Após a implementação das mudanças, acompanhamos um aumento nos acessos e nas interações
+            com a Home, indicando uma evolução em relação ao comportamento observado no início do
+            projeto.
+          </p>
+<p>
+            A nova experiência também foi muito bem recebida pelos stakeholders. A reorganização da
+            hierarquia e a transformação da Home em um painel mais orientado à ação tornaram mais
+            clara a função da tela inicial dentro da plataforma.
+          </p>
+<p>
+            Embora os números detalhados e uma nova medição de CSAT não estejam disponíveis, o
+            trabalho produziu um legado importante: os estudos de comportamento, os princípios e os
+            direcionadores definidos para essa evolução serviram como uma das bases para a construção
+            da Home da iônica V3 web.
+          </p>
+<p>
+            Mais do que melhorar uma interface existente, o projeto ajudou a estabelecer uma nova
+            compreensão sobre o papel da Home no produto — menos como uma vitrine de funcionalidades
+            e mais como um ponto de partida contextual para as tarefas dos usuários.
+          </p>
+</div>
+<p class="note mt-8">
+          Os dados detalhados do período não estão mais disponíveis; os resultados apresentados se
+          baseiam no acompanhamento realizado após a implementação.
+        </p>
+</div>
+</div>
+</section>
+<!-- 19. Aprendizados -------------------------------------------------------------------------------------------------- -->
+<section aria-labelledby="aprendizados" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="rule-top pt-10 sm:pt-12">
+<p class="label mb-6">O que ficou</p>
+<h2 class="display text-[clamp(1.75rem,4vw,2.75rem)] max-w-[22ch]" id="aprendizados">
+        Visibilidade não significa utilidade.
+      </h2>
+<div class="prose mt-8 max-w-[62ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+          O projeto reforçou que elementos grandes e visualmente destacados podem permanecer
+          irrelevantes quando não respondem às intenções reais dos usuários.
+        </p>
+<p>
+          O cruzamento entre CSAT, shadowing e mapas de calor permitiu enxergar não apenas onde as
+          pessoas clicavam, mas por que determinados caminhos se repetiam. A Home precisava deixar
+          de ser uma vitrine de funcionalidades e assumir o papel de painel de ação.
+        </p>
+<p>
+          Também aprendi que, em um produto vivo, a solução precisa ser flexível o suficiente para
+          continuar evoluindo. Mais do que reorganizar uma página, o trabalho estabeleceu uma lógica
+          para priorizar tarefas, conteúdos recentes e próximos passos.
+        </p>
+</div>
+</div>
+</section>
+<!-- 20. Relação com o case do app ------------------------------------------------------------------------------------- -->
+<aside aria-labelledby="relacionado" class="pt-14 sm:pt-20">
+<div class="rule-top pt-8 grid gap-x-16 gap-y-5 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+<div>
+<p class="label mb-4">Projeto relacionado</p>
+<h2 class="text-[clamp(1.125rem,1.8vw,1.375rem)] font-bold leading-[1.2] max-w-[22ch]" id="relacionado" style="letter-spacing: -0.015em;">
+          O mesmo produto, outra frente
+        </h2>
+</div>
+<div>
+<p class="prose max-w-[58ch] text-[0.9375rem] sm:text-[1rem]">
+          Veja também como o conhecimento acumulado sobre a iônica contribuiu para o projeto do
+          aplicativo V3 — um projeto distinto, com escopo e narrativa próprios.
+        </p>
+<p class="mt-5">
+<a class="nav-link nav-next font-medium" href="./ionica-v3.html" style="color: var(--ink);">
+            Case iônica V3 APP <span aria-hidden="true" class="arrow">→</span>
+</a>
+</p>
+</div>
+</div>
+</aside>
+<!-- Navegação entre cases ------------------------------------------------------------------------------------------------ -->
+<nav aria-label="Navegação entre cases" class="rule-top mt-16 sm:mt-24 lg:mt-32 pt-10 pb-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-4">
+<a class="nav-link mono text-[0.8125rem] font-medium" href="../index.html">
+<span aria-hidden="true" class="arrow">←</span> Todos os cases
+    </a>
+<a class="nav-link nav-next text-[1.0625rem] sm:text-[1.25rem] font-semibold" href="./estadao-templates.html" style="color: var(--ink);">
+      Próximo case · Templates de matérias do Estadão <span aria-hidden="true" class="arrow">→</span>
+</a>
+</nav>
+<footer class="rule-top mt-12 sm:mt-16 py-8 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+<span class="label">Rê Trocoli · Product Designer Sênior</span>
+<span class="label mono">© 2026</span>
+</footer>
+</div>
+<script>
+  // Abrir sempre no topo: o navegador (e o visualizador de artifacts) tende a restaurar
+  // a posição de rolagem anterior ao navegar entre as páginas do portfólio.
+  (function () {
+    try { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; } catch (e) {}
+    function toTop() {
+      if (location.hash) return; // respeita links âncora
+      window.scrollTo(0, 0);
+      if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
+    }
+    toTop();
+    window.addEventListener("pageshow", toTop);
+    window.addEventListener("load", toTop);
+  })();
+</script>
+</body>
+</html>

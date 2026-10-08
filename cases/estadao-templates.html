@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Templates do Estadão — Rê Trocoli</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --ground:      #F8F9FA;
+    --ground-soft: #F1F2F4;
+    --ink:         #1A1A1A;
+    --ink-muted:   #6A6F76;
+    --ink-faint:   #9AA0A7;
+    --rule:        #DFE2E6;
+    --accent:      #2E4A62;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #131517;
+      --ground-soft: #191C1F;
+      --ink:         #ECEDEF;
+      --ink-muted:   #949AA2;
+      --ink-faint:   #6B7178;
+      --rule:        #2A2E33;
+      --accent:      #93B4CE;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #131517;
+    --ground-soft: #191C1F;
+    --ink:         #ECEDEF;
+    --ink-muted:   #949AA2;
+    --ink-faint:   #6B7178;
+    --rule:        #2A2E33;
+    --accent:      #93B4CE;
+  }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .mono {
+    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .label {
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  h1, h2, h3 { text-wrap: balance; }
+
+  .display {
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 0.96;
+  }
+
+  .rule-top { border-top: 1px solid var(--rule); }
+
+  /* Quiet inline links ---------------------------------------------------- */
+  .link-quiet {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1px;
+    transition: color 200ms ease, border-color 200ms ease;
+  }
+  .link-quiet:hover { color: var(--accent); border-color: var(--accent); }
+  .link-quiet:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Navegação do case ----------------------------------------------------- */
+  .nav-link {
+    color: var(--ink-muted);
+    text-decoration: none;
+    transition: color 200ms ease;
+  }
+  .nav-link:hover { color: var(--accent); }
+  .nav-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  .nav-link .arrow {
+    display: inline-block;
+    transition: transform 220ms ease;
+  }
+  .nav-link:hover .arrow { transform: translateX(-0.2rem); }
+  .nav-next:hover .arrow { transform: translateX(0.2rem); }
+
+  /* Tags / evidências ----------------------------------------------------- */
+  .tag {
+    font-size: 0.75rem;
+    line-height: 1;
+    padding: 0.375rem 0.5625rem;
+    border-radius: 4px;
+    background: var(--ground-soft);
+    color: var(--ink-muted);
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.375rem; }
+
+  /* Números de impacto ---------------------------------------------------- */
+  .stat-figure {
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+  }
+  .stat-caption {
+    margin-top: 0.75rem;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--ink-muted);
+    max-width: 22ch;
+  }
+
+  /* Placeholders de imagem ------------------------------------------------ */
+  figure { margin: 0; }
+  .shot {
+    border-radius: 10px;
+    background: var(--ground-soft);
+    border: 1px solid var(--rule);
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 2rem 1.5rem;
+  }
+  .shot img { width: 100%; height: auto; display: block; border-radius: 10px; }
+  .shot-note {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--ink-faint);
+    max-width: 34ch;
+  }
+  .shot-wide  { aspect-ratio: 16 / 9; }
+  .shot-tall  { aspect-ratio: 4 / 5; }
+  .shot-square{ aspect-ratio: 1 / 1; }
+  figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    color: var(--ink-muted);
+  }
+
+  /* Decisões -------------------------------------------------------------- */
+  .decision { border-top: 1px solid var(--rule); }
+  .decision-number {
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+  }
+  .decision-title {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  .prose {
+    color: var(--ink-muted);
+    line-height: 1.7;
+  }
+  .prose p + p { margin-top: 1.125rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    .nav-link .arrow { transform: none !important; }
+  }
+</style>
+<meta content="Os templates de matéria são uma das principais superfícies de consumo do Estadão. O desafio não era simplesmente modernizar sua aparência: a mesma página precisava oferecer uma boa experiência de…" name="description"/>
+<meta content="website" property="og:type"/>
+<meta content="Templates do Estadão — Rê Trocoli" property="og:title"/>
+<meta content="Os templates de matéria são uma das principais superfícies de consumo do Estadão. O desafio não era simplesmente modernizar sua aparência: a mesma página precisava oferecer uma boa experiência de…" property="og:description"/>
+<meta content="pt_BR" property="og:locale"/>
+<meta content="#F8F9FA" name="theme-color"/>
+<link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231A1A1A'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-family='Inter,Arial,sans-serif' font-weight='600' font-size='30' fill='%23F8F9FA'%3ERT%3C/text%3E%3C/svg%3E" rel="icon"/>
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="mx-auto w-full max-w-[76rem] px-5 sm:px-8 lg:px-12">
+<!-- Topo ---------------------------------------------------------------- -->
+<header class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 py-6 sm:py-8">
+<a class="nav-link mono text-[0.8125rem] font-medium" href="../index.html">
+<span aria-hidden="true" class="arrow">←</span> Todos os cases
+    </a>
+<a class="nav-link mono text-[0.8125rem] font-medium" href="../index.html" style="color: var(--ink);">Rê Trocoli</a>
+</header>
+<!-- Hero ---------------------------------------------------------------- -->
+<section class="rule-top pt-10 pb-12 sm:pt-14 sm:pb-16 lg:pt-20 lg:pb-20">
+<p class="label mb-8 sm:mb-10">Estadão · Product Design</p>
+<h1 class="display text-[clamp(2.25rem,6.5vw,4.5rem)] max-w-[18ch]">
+      Redesign dos templates do Estadão
+    </h1>
+<p class="mt-8 sm:mt-10 max-w-[56ch] text-[clamp(1.0625rem,1.5vw,1.375rem)] leading-[1.6]" style="color: var(--ink-muted);">
+      Equilibrando experiência de leitura, publicidade, SEO e performance em uma das
+      superfícies mais importantes do jornal.
+    </p>
+<p class="mono mt-8 text-[0.8125rem] leading-[1.7]" style="color: var(--ink-faint);">
+      Estadão · Product Designer · Web + Mobile · jun–set 2023 (1ª fase)
+    </p>
+</section>
+<!-- Resultados (primeira dobra) ------------------------------------------ -->
+<section aria-label="Principais resultados" class="rule-top py-10 sm:py-14">
+<div class="grid gap-10 sm:gap-8 sm:grid-cols-3">
+<div>
+<p class="stat-figure">~30%</p>
+<p class="stat-caption">mais tempo de permanência nas páginas</p>
+</div>
+<div>
+<p class="stat-figure">~15%</p>
+<p class="stat-caption">aumento no score de promotores do NPS</p>
+</div>
+<div>
+<p class="stat-figure">+5%</p>
+<p class="stat-caption">exibição de anúncios</p>
+</div>
+</div>
+</section>
+<!-- 01 — O problema ------------------------------------------------------ -->
+<section aria-labelledby="problema" class="rule-top pt-14 sm:pt-20 lg:pt-28">
+<div class="grid gap-8 lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-8">
+<span class="mono label lg:pt-2">01</span>
+<div>
+<h2 class="display text-[clamp(1.75rem,4vw,2.75rem)] max-w-[20ch]" id="problema">
+          O problema não era só de interface
+        </h2>
+<div class="prose mt-7 max-w-[62ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+            Os templates de matéria são uma das principais superfícies de consumo do Estadão.
+            O desafio não era simplesmente modernizar sua aparência: a mesma página precisava
+            oferecer uma boa experiência de leitura, sustentar a monetização por publicidade,
+            melhorar performance e SEO e favorecer a recirculação de conteúdo.
+          </p>
+<p>
+            A análise do produto revelou problemas de legibilidade e organização, carregamento
+            lento, anúncios interrompendo o fluxo de leitura, links de recirculação inconsistentes
+            e queda na rolagem das páginas. A experiência também estava relacionada a uma
+            preocupação de negócio maior: o aumento do churn de assinaturas.
+          </p>
+</div>
+</div>
+</div>
+<!-- IMAGEM 1 — template anterior anotado -->
+<figure class="mt-10 sm:mt-14">
+<div class="shot shot-wide">
+<img alt="Template anterior do Estadão com anotações apontando os problemas de leitura, publicidade e recirculação" src="img/01-template-anterior-anotado.png"/>
+</div>
+<figcaption>O template anterior, com os pontos de atrito mapeados na análise do produto.</figcaption>
+</figure>
+</section>
+<!-- Meu papel ------------------------------------------------------------ -->
+<section aria-labelledby="papel" class="pt-14 sm:pt-20 lg:pt-28">
+<div class="grid gap-8 lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-8">
+<span aria-hidden="true" class="mono label lg:pt-2">—</span>
+<div>
+<h2 class="display text-[clamp(1.5rem,3vw,2.125rem)] max-w-[20ch]" id="papel">Meu papel</h2>
+<div class="prose mt-6 max-w-[62ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+            Atuei como Product Designer da squad do site, trabalhando com Product Owner, Tech Lead,
+            desenvolvimento e jornalismo/QA e em alinhamento com áreas como SEO, Marketing e Negócios.
+          </p>
+<p>
+            Minha responsabilidade foi conduzir o redesign de ponta a ponta: compreender os
+            objetivos de negócio e o comportamento dos leitores, transformar essas evidências em
+            alternativas de design, validar as propostas com usuários e acompanhar a solução até
+            o lançamento e a leitura dos resultados.
+          </p>
+</div>
+<div class="mt-8">
+<p class="label mb-3">Principais fontes de evidência</p>
+<div class="tags">
+<span class="tag">Mapas de calor</span>
+<span class="tag">Sessões gravadas</span>
+<span class="tag">NPS</span>
+<span class="tag">Entrevistas</span>
+<span class="tag">Testes de usabilidade</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 02 — Decisões de design ---------------------------------------------- -->
+<section aria-labelledby="decisoes" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-8 lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-8 pb-10 sm:pb-12">
+<span class="mono label lg:pt-2">02</span>
+<div>
+<h2 class="display text-[clamp(1.75rem,4vw,2.75rem)] max-w-[18ch]" id="decisoes">
+          As decisões de design
+        </h2>
+</div>
+</div>
+<!-- Decisão 01 -->
+<article class="decision py-10 sm:py-14">
+<div class="grid gap-8 lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-8">
+<span class="mono decision-number lg:pt-2">01</span>
+<div>
+<h3 class="decision-title text-[clamp(1.375rem,2.6vw,1.875rem)] max-w-[22ch]">
+            Fazer publicidade e leitura coexistirem
+          </h3>
+<div class="prose mt-5 max-w-[60ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+              Os anúncios faziam parte do modelo de negócio, portanto removê-los não era uma solução.
+              O problema era como eles apareciam ao longo da matéria.
+            </p>
+<p>
+              Reorganizamos sua distribuição para preservar a visibilidade comercial sem fragmentar
+              continuamente a leitura.
+            </p>
+</div>
+</div>
+</div>
+</article>
+<!-- Decisão 02 -->
+<article class="decision py-10 sm:py-14">
+<div class="grid gap-8 lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-8">
+<span class="mono decision-number lg:pt-2">02</span>
+<div>
+<h3 class="decision-title text-[clamp(1.375rem,2.6vw,1.875rem)] max-w-[22ch]">
+            Dar ao leitor orientação durante matérias longas
+          </h3>
+<div class="prose mt-5 max-w-[60ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+              A nova estrutura reforçou hierarquia e legibilidade e adicionou elementos de orientação,
+              como breadcrumb funcional, identificação do tipo de conteúdo e barra de progresso de leitura.
+            </p>
+</div>
+</div>
+</div>
+</article>
+<!-- Decisão 03 -->
+<article class="decision py-10 sm:py-14">
+<div class="grid gap-8 lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-8">
+<span class="mono decision-number lg:pt-2">03</span>
+<div>
+<h3 class="decision-title text-[clamp(1.375rem,2.6vw,1.875rem)] max-w-[22ch]">
+            Transformar o fim de uma matéria em começo de outra
+          </h3>
+<div class="prose mt-5 max-w-[60ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+              A recirculação era inconsistente. Padronizamos os links relacionados e reorganizamos
+              as recomendações de conteúdo, criando caminhos mais claros para o leitor continuar
+              navegando pelo Estadão.
+            </p>
+</div>
+</div>
+</div>
+</article>
+<div class="rule-top"></div>
+</section>
+<!-- 03 — Alternativas ----------------------------------------------------- -->
+<section aria-labelledby="alternativas" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-8 lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-8">
+<span class="mono label lg:pt-2">03</span>
+<div>
+<h2 class="display text-[clamp(1.75rem,4vw,2.75rem)] max-w-[20ch]" id="alternativas">
+          Testamos alternativas — e o design mudou
+        </h2>
+<div class="prose mt-7 max-w-[62ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+            Desenvolvemos três propostas diferentes de estrutura para o novo template
+            de matérias do Estadão.
+          </p>
+<p>
+            As alternativas foram apresentadas a leitores em entrevistas combinadas
+            com testes de usabilidade e também avaliadas com os stakeholders envolvidos
+            no projeto. O objetivo era entender qual delas fazia mais sentido para a
+            experiência de leitura, considerando também restrições técnicas e objetivos
+            de SEO, Marketing e Negócios.
+          </p>
+<p>
+            A proposta selecionada por leitores e stakeholders evoluiu para o template
+            oficial e passou a servir como base estrutural para os diferentes tipos de
+            conteúdo do Estadão.
+          </p>
+</div>
+</div>
+</div>
+<!-- IMAGEM 2 — três propostas estruturais avaliadas -->
+<figure class="mt-10 sm:mt-14">
+<div class="shot shot-wide">
+<img alt="As três propostas de estrutura avaliadas antes da escolha do novo template do Estadão" src="img/02-alternativas-testes.png"/>
+</div>
+<figcaption>
+        As três propostas avaliadas antes da definição do novo template oficial.
+      </figcaption>
+</figure>
+</section>
+<!-- 04 — A solução -------------------------------------------------------- -->
+<section aria-labelledby="solucao" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-8 lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-8 pb-10 sm:pb-12">
+<span class="mono label lg:pt-2">04</span>
+<div>
+<h2 class="display text-[clamp(1.75rem,4vw,2.75rem)] max-w-[16ch]" id="solucao">
+          A solução
+        </h2>
+</div>
+</div>
+<!-- IMAGEM 3 — solução aprovada anotada (full-width) -->
+<figure>
+<div class="shot shot-tall sm:aspect-[16/10]">
+<img alt="Template aprovado do Estadão com anotações da barra de progresso, breadcrumb, hierarquia editorial, distribuição de anúncios e recirculação" src="img/03-solucao-aprovada-anotada.png"/>
+</div>
+<figcaption>
+        Barra de progresso, breadcrumb e tipo de conteúdo, hierarquia editorial, distribuição
+        de anúncios, recirculação e a leitura em mobile.
+      </figcaption>
+</figure>
+</section>
+<!-- 05 — Base para outras experiências ------------------------------------ -->
+<section aria-labelledby="base" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-8 lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-8">
+<span class="mono label lg:pt-2">05</span>
+<div>
+<h2 class="display text-[clamp(1.75rem,4vw,2.75rem)] max-w-[20ch]" id="base">
+          Uma solução que virou base
+        </h2>
+<div class="prose mt-7 max-w-[62ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+            O template aprovado deixou de ser uma solução isolada. Sua estrutura passou a servir
+            de base para outras experiências do Estadão, incluindo o Ao Vivo e as Reportagens
+            Especiais, levando padrões de navegação e leitura para outras áreas do produto.
+          </p>
+</div>
+</div>
+</div>
+<div class="mt-10 sm:mt-14 grid gap-6 sm:gap-8 md:grid-cols-2">
+<!-- IMAGEM 4 — Ao Vivo -->
+<figure>
+<div class="shot shot-square">
+<img alt="Experiência Ao Vivo do Estadão construída sobre a estrutura do novo template" src="img/04-ao-vivo.png"/>
+</div>
+<figcaption>Ao Vivo</figcaption>
+</figure>
+<!-- IMAGEM 5 — Reportagens Especiais -->
+<figure>
+<div class="shot shot-square">
+<img alt="Reportagens Especiais do Estadão construídas sobre a estrutura do novo template" src="img/05-reportagens-especiais.png"/>
+</div>
+<figcaption>Reportagens Especiais</figcaption>
+</figure>
+</div>
+</section>
+<!-- 06 — Impacto ---------------------------------------------------------- -->
+<section aria-labelledby="impacto" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-8 lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-8 pb-10 sm:pb-12">
+<span class="mono label lg:pt-2">06</span>
+<div>
+<h2 class="display text-[clamp(1.75rem,4vw,2.75rem)] max-w-[16ch]" id="impacto">Impacto</h2>
+</div>
+</div>
+<div class="rule-top grid gap-10 sm:gap-8 sm:grid-cols-3 py-10 sm:py-14">
+<div>
+<p class="stat-figure">~30%</p>
+<p class="stat-caption">mais tempo de permanência nas páginas</p>
+</div>
+<div>
+<p class="stat-figure">~15%</p>
+<p class="stat-caption">aumento no score de promotores do NPS</p>
+</div>
+<div>
+<p class="stat-figure">+5%</p>
+<p class="stat-caption">exibição de anúncios</p>
+</div>
+</div>
+<div class="rule-top pt-8">
+<p class="prose max-w-[62ch] text-[1rem] sm:text-[1.0625rem]">
+        O acompanhamento pós-lançamento também indicou evolução de Core Web Vitals e SEO,
+        estabilização do churn e crescimento de audiência nas experiências derivadas do novo
+        template, especialmente no Ao Vivo.
+      </p>
+</div>
+</section>
+<!-- 07 — O que ficou ------------------------------------------------------ -->
+<section aria-labelledby="aprendizado" class="pt-16 sm:pt-24 lg:pt-32">
+<div class="grid gap-8 lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-8">
+<span class="mono label lg:pt-2">07</span>
+<div>
+<p class="label mb-6">O que ficou</p>
+<h2 class="display text-[clamp(1.75rem,4vw,2.75rem)] max-w-[22ch]" id="aprendizado">
+          Projetar uma boa experiência também significa negociar tensões
+        </h2>
+<div class="prose mt-7 max-w-[62ch] text-[1rem] sm:text-[1.0625rem]">
+<p>
+            Neste projeto, melhorar a experiência não significava maximizar uma única métrica.
+            Leitura, publicidade, SEO, performance e necessidades editoriais competiam pelo mesmo
+            espaço. O trabalho de design foi encontrar uma estrutura capaz de equilibrar esses
+            interesses sem perder de vista o leitor.
+          </p>
+<p>
+            Nem todas as propostas foram adiante. Algumas ideias de inovação não foram aprovadas
+            por Marketing, reforçando que trabalhar em produtos de grande escala também exige
+            entender restrições, negociar prioridades e saber evoluir uma solução dentro do
+            contexto real da organização.
+          </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Navegação entre cases -------------------------------------------------- -->
+<nav aria-label="Navegação entre cases" class="rule-top mt-16 sm:mt-24 lg:mt-32 pt-10 pb-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-4">
+<a class="nav-link mono text-[0.8125rem] font-medium" href="../index.html">
+<span aria-hidden="true" class="arrow">←</span> Todos os cases
+    </a>
+<a class="nav-link nav-next text-[1.0625rem] sm:text-[1.25rem] font-semibold" href="./eleicoes-2024.html" style="color: var(--ink);">Próximo case · Eleições Municipais 2024 <span aria-hidden="true" class="arrow">→</span></a>
+</nav>
+<footer class="rule-top mt-12 sm:mt-16 py-8 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+<span class="label">Rê Trocoli · Product Designer Sênior</span>
+<span class="label mono">© 2026</span>
+</footer>
+</div>
+<script>
+  // Abrir sempre no topo: o navegador (e o visualizador de artifacts) tende a restaurar
+  // a posição de rolagem anterior ao navegar entre as páginas do portfólio.
+  (function () {
+    try { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; } catch (e) {}
+    function toTop() {
+      if (location.hash) return; // respeita links âncora
+      window.scrollTo(0, 0);
+      if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
+    }
+    toTop();
+    window.addEventListener("pageshow", toTop);
+    window.addEventListener("load", toTop);
+  })();
+</script>
+</body>
+</html>

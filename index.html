@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Rê Trocoli</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --ground:      #F8F9FA;
+    --ground-soft: #F1F2F4;
+    --ink:         #1A1A1A;
+    --ink-muted:   #6A6F76;
+    --ink-faint:   #9AA0A7;
+    --rule:        #DFE2E6;
+    --accent:      #2E4A62;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #131517;
+      --ground-soft: #191C1F;
+      --ink:         #ECEDEF;
+      --ink-muted:   #949AA2;
+      --ink-faint:   #6B7178;
+      --rule:        #2A2E33;
+      --accent:      #93B4CE;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #131517;
+    --ground-soft: #191C1F;
+    --ink:         #ECEDEF;
+    --ink-muted:   #949AA2;
+    --ink-faint:   #6B7178;
+    --rule:        #2A2E33;
+    --accent:      #93B4CE;
+  }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .mono {
+    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .label {
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  h1, h2, h3 { text-wrap: balance; }
+
+  .display {
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 0.96;
+  }
+
+  .rule-top { border-top: 1px solid var(--rule); }
+
+  /* Case rows ------------------------------------------------------------ */
+  .case {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-top: 1px solid var(--rule);
+    transition: background-color 220ms ease;
+  }
+  .case:hover { background-color: var(--ground-soft); }
+  .case:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+  .case-title {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+    transition: color 220ms ease;
+  }
+  .case:hover .case-title { color: var(--accent); }
+  .case-arrow {
+    display: inline-block;
+    opacity: 0;
+    transform: translateX(-0.35rem);
+    transition: opacity 220ms ease, transform 220ms ease;
+    color: var(--accent);
+  }
+  .case:hover .case-arrow,
+  .case:focus-visible .case-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Quiet inline links ---------------------------------------------------- */
+  .link-quiet {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1px;
+    transition: color 200ms ease, border-color 200ms ease;
+  }
+  .link-quiet:hover { color: var(--accent); border-color: var(--accent); }
+  .link-quiet:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Chips de competência ------------------------------------------------ */
+  .chip {
+    font-size: 0.8125rem;
+    line-height: 1;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    color: var(--ink-muted);
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-top: 0.875rem; }
+  .tag {
+    font-size: 0.75rem;
+    line-height: 1;
+    padding: 0.3125rem 0.5rem;
+    border-radius: 4px;
+    background: var(--ground-soft);
+    color: var(--ink-muted);
+  }
+
+  /* Seção de UI ----------------------------------------------------------- */
+  .ui-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+  }
+  .ui-frame {
+    aspect-ratio: 4 / 3;
+    border-radius: 10px;
+    background: var(--ground-soft);
+    border: 1px solid var(--rule);
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+  }
+  .ui-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ui-frame-empty { font-size: 0.8125rem; color: var(--ink-faint); }
+  .ui-caption { margin-top: 0.625rem; font-size: 0.9375rem; font-weight: 500; }
+  .ui-caption span { display: block; font-weight: 400; font-size: 0.8125rem; color: var(--ink-muted); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    .case-arrow { opacity: 1; transform: none; }
+  }
+</style>
+<meta content="Rê Trocoli — Product Designer Sênior · UX/UI. Produtos com muito conteúdo, muitos públicos e muitas regras de negócio, claros para quem usa e sustentáveis para quem mantém." name="description"/>
+<meta content="website" property="og:type"/>
+<meta content="Rê Trocoli — Product Designer Sênior · UX/UI" property="og:title"/>
+<meta content="Rê Trocoli — Product Designer Sênior · UX/UI. Produtos com muito conteúdo, muitos públicos e muitas regras de negócio, claros para quem usa e sustentáveis para quem mantém." property="og:description"/>
+<meta content="pt_BR" property="og:locale"/>
+<meta content="#F8F9FA" name="theme-color"/>
+<link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231A1A1A'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-family='Inter,Arial,sans-serif' font-weight='600' font-size='30' fill='%23F8F9FA'%3ERT%3C/text%3E%3C/svg%3E" rel="icon"/>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<div class="mx-auto w-full max-w-[76rem] px-5 sm:px-8 lg:px-12">
+<!-- Topo ---------------------------------------------------------------- -->
+<header class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-6 sm:py-8">
+<span class="mono text-[0.8125rem] font-medium" style="color: var(--ink);">Rê Trocoli</span>
+<span class="label">São Paulo, Brasil</span>
+</header>
+<!-- Hero ---------------------------------------------------------------- -->
+<section class="rule-top pt-10 pb-16 sm:pt-14 sm:pb-24 lg:pt-20 lg:pb-32">
+<p class="label mb-8 sm:mb-10">Product Designer Sênior · UX/UI</p>
+<h1 class="display text-[clamp(2.5rem,8vw,5.25rem)] max-w-[14ch]">
+      Olá! Sou a<br/>Rê Trocoli.
+    </h1>
+<p class="mt-8 sm:mt-10 max-w-[58ch] text-[clamp(1.0625rem,1.5vw,1.375rem)] leading-[1.62]" style="color: var(--ink-muted);">
+      Sou Product Designer Sênior, com 25 anos de experiência em produtos com muito conteúdo,
+      muitos públicos e muitas regras de negócio. Meu trabalho é tornar esses produtos claros para
+      quem usa e sustentáveis para quem mantém: organizar informação, equilibrar metas que competem
+      entre si e desenhar soluções que viram base para o time.
+    </p>
+<p class="mt-5 max-w-[58ch] text-[1rem] sm:text-[1.0625rem] leading-[1.62]" style="color: var(--ink-muted);">
+      Passei por <span style="color: var(--ink);">Oi</span>,
+      <span style="color: var(--ink);">Estadão</span>,
+      <span style="color: var(--ink);">FTD Educação</span> e
+      <span style="color: var(--ink);">Caixa</span>, em produtos de telecom, mídia,
+      educação e setor financeiro.
+</p>
+<ul aria-label="Competências" class="skills mt-10 sm:mt-12 flex flex-wrap gap-2">
+<li class="chip">Estratégia de produto</li>
+<li class="chip">Pesquisa com usuários</li>
+<li class="chip">Arquitetura da informação</li>
+<li class="chip">Service Design</li>
+<li class="chip">UX Design</li>
+<li class="chip">UI Design</li>
+<li class="chip">Design Systems</li>
+<li class="chip">Prototipação</li>
+</ul>
+</section>
+<!-- Cases --------------------------------------------------------------- -->
+<section aria-labelledby="cases-heading">
+<div class="flex items-baseline justify-between gap-6 pb-5">
+<h2 class="label" id="cases-heading" style="color: var(--ink-muted);">Cases de produto</h2>
+<span class="label mono">04</span>
+</div>
+<!-- 01 -->
+<a aria-label="Case 01 — iônica V3 APP, FTD Educação" class="case group" href="cases/ionica-v3.html">
+<div class="grid gap-x-8 gap-y-4 py-8 sm:py-10 md:grid-cols-[3.5rem_minmax(0,1fr)] lg:grid-cols-[3.5rem_minmax(0,0.95fr)_minmax(0,1.05fr)]">
+<span class="mono label pt-1.5 md:pt-2.5">01</span>
+<h3 class="case-title text-[clamp(1.5rem,3vw,2.125rem)] max-w-[16ch]">
+          iônica V3 APP <span class="font-normal" style="color: var(--ink-muted);">(FTD Educação)</span>
+<span aria-hidden="true" class="case-arrow">→</span>
+</h3>
+<div class="md:col-start-2 lg:col-start-3 lg:pt-2">
+<p class="max-w-[56ch] text-[0.9375rem] sm:text-base leading-[1.7]" style="color: var(--ink-muted);">
+<span class="mono text-[0.75rem] uppercase tracking-[0.12em] mr-1.5" style="color: var(--ink-faint);">TL;DR</span>
+            A V3 evolui a experiência de Atividades que já existe no APP para uma jornada mais
+            completa, ampliando acompanhamento e interação do Estudante. Meu trabalho é repensar
+            essas experiências para o contexto mobile, equilibrando arquitetura, hierarquia,
+            acessibilidade e diferentes dispositivos — sem simplesmente reproduzir a Web.
+          </p>
+<div class="tags"><span class="tag">Web para app</span><span class="tag">Mobile nativo</span><span class="tag">Engajamento</span><span class="tag">UI</span></div>
+</div>
+</div>
+</a>
+<!-- 02 -->
+<a aria-label="Case 02 — Evolução da Home iônica web V1, FTD Educação" class="case group" href="cases/ionica-home.html">
+<div class="grid gap-x-8 gap-y-4 py-8 sm:py-10 md:grid-cols-[3.5rem_minmax(0,1fr)] lg:grid-cols-[3.5rem_minmax(0,0.95fr)_minmax(0,1.05fr)]">
+<span class="mono label pt-1.5 md:pt-2.5">02</span>
+<h3 class="case-title text-[clamp(1.5rem,3vw,2.125rem)] max-w-[16ch]">
+          Evolução da Home iônica web V1 <span class="font-normal" style="color: var(--ink-muted);">(FTD Educação)</span>
+<span aria-hidden="true" class="case-arrow">→</span>
+</h3>
+<div class="md:col-start-2 lg:col-start-3 lg:pt-2">
+<p class="max-w-[56ch] text-[0.9375rem] sm:text-base leading-[1.7]" style="color: var(--ink-muted);">
+<span class="mono text-[0.75rem] uppercase tracking-[0.12em] mr-1.5" style="color: var(--ink-faint);">TL;DR</span>
+            A Home reunia quase tudo que a plataforma oferecia, mas professores e estudantes a
+            atravessavam direto para o menu lateral. Cruzei apontamentos de CSAT, sessões de
+            shadowing e mapas de calor para entender por quê, e reorganizei a tela como um painel
+            orientado à ação — conteúdo recente, tarefas pendentes e próximos passos no primeiro
+            scroll. Os direcionadores definidos ali viraram uma das bases da Home da V3 web.
+          </p>
+<div class="tags"><span class="tag">Pesquisa comportamental</span><span class="tag">Mapas de calor</span><span class="tag">Arquitetura da informação</span><span class="tag">UI</span></div>
+</div>
+</div>
+</a>
+<!-- 03 -->
+<a aria-label="Case 03 — Templates de matérias do Estadão" class="case group" href="cases/estadao-templates.html">
+<div class="grid gap-x-8 gap-y-4 py-8 sm:py-10 md:grid-cols-[3.5rem_minmax(0,1fr)] lg:grid-cols-[3.5rem_minmax(0,0.95fr)_minmax(0,1.05fr)]">
+<span class="mono label pt-1.5 md:pt-2.5">03</span>
+<h3 class="case-title text-[clamp(1.5rem,3vw,2.125rem)] max-w-[16ch]">
+          Templates de matérias do Estadão
+          <span aria-hidden="true" class="case-arrow">→</span>
+</h3>
+<div class="md:col-start-2 lg:col-start-3 lg:pt-2">
+<p class="max-w-[56ch] text-[0.9375rem] sm:text-base leading-[1.7]" style="color: var(--ink-muted);">
+<span class="mono text-[0.75rem] uppercase tracking-[0.12em] mr-1.5" style="color: var(--ink-faint);">TL;DR</span>
+            O template de matéria precisava funcionar ao mesmo tempo para o leitor, a publicidade e o
+            SEO. Como designer da squad do site, conduzi o redesign da análise de dados ao handoff e
+            testei três alternativas com leitores. Resultados:
+            <span style="color: var(--ink);">~30% mais tempo de permanência</span>,
+            <span style="color: var(--ink);">~15% no score de promotores</span> e
+            <span style="color: var(--ink);">+5% na exibição de anúncios</span>. O template virou base
+            para o Ao Vivo e as reportagens especiais.
+          </p>
+<div class="tags"><span class="tag">Pesquisa com usuários</span><span class="tag">Métricas de negócio</span><span class="tag">SEO &amp; performance</span><span class="tag">UI</span></div>
+</div>
+</div>
+</a>
+
+
+<!-- 05 -->
+<a aria-label="Case 04 — Eleições Municipais 2024, Estadão" class="case group" href="cases/eleicoes-2024.html">
+<div class="grid gap-x-8 gap-y-4 py-8 sm:py-10 md:grid-cols-[3.5rem_minmax(0,1fr)] lg:grid-cols-[3.5rem_minmax(0,0.95fr)_minmax(0,1.05fr)]">
+<span class="mono label pt-1.5 md:pt-2.5">04</span>
+<h3 class="case-title text-[clamp(1.5rem,3vw,2.125rem)] max-w-[16ch]">
+          Eleições Municipais 2024 <span class="font-normal" style="color: var(--ink-muted);">(Estadão)</span>
+<span aria-hidden="true" class="case-arrow">→</span>
+</h3>
+<div class="md:col-start-2 lg:col-start-3 lg:pt-2">
+<p class="max-w-[56ch] text-[0.9375rem] sm:text-base leading-[1.7]" style="color: var(--ink-muted);">
+<span class="mono text-[0.75rem] uppercase tracking-[0.12em] mr-1.5" style="color: var(--ink-faint);">TL;DR</span>
+            Experiência e interface da cobertura eleitoral em tempo real: widgets dinâmicos para a
+            Home, cards de candidatos nos templates de matéria e páginas de apuração com mapas
+            interativos. Alta densidade de dados, performance sob picos históricos de audiência.
+          </p>
+<div class="tags"><span class="tag">Dados em tempo real</span><span class="tag">Visualização de dados</span><span class="tag">Mobile</span><span class="tag">UI</span></div>
+</div>
+</div>
+</a>
+
+
+<div class="rule-top"></div>
+</section>
+<!-- Interfaces (UI) ------------------------------------------------------ -->
+
+<!-- Galeria & Contato ---------------------------------------------------- -->
+<section class="pt-16 sm:pt-24 lg:pt-32 pb-6">
+<div class="grid gap-12 sm:gap-16 lg:grid-cols-[minmax(0,1fr)] lg:gap-20">
+<div>
+<p class="label mb-5">Contato</p>
+<ul class="flex flex-col gap-3 text-[1.0625rem] sm:text-[1.125rem]">
+<li>
+<a class="link-quiet font-medium" href="https://www.linkedin.com/in/retrocoli/" rel="noopener noreferrer" target="_blank">LinkedIn</a>
+</li>
+<li>
+<a class="link-quiet font-medium" href="mailto:retrocoli@gmail.com" id="link-email">retrocoli@gmail.com</a>
+</li>
+<li>
+<a class="link-quiet font-medium" href="assets/renata-trocoli-cv.pdf" id="link-cv" rel="noopener noreferrer" target="_blank">Baixar CV</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+<footer class="rule-top mt-16 sm:mt-24 py-8 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+<span class="label">Rê Trocoli · Product Designer Sênior</span>
+<span class="label mono">© 2026</span>
+</footer>
+</div>
+<script>
+  // Baixar CV — dentro do visualizador de artifacts, um link direto para o PDF não
+  // dispara download. Quando a capability "downloads" está disponível, o arquivo é
+  // entregue por ela; caso contrário, o link segue seu comportamento normal (abrir o PDF).
+  (function () {
+    var cv = document.getElementById("link-cv");
+    if (!cv || !window.claude || typeof window.claude.use !== "function") return;
+
+    window.claude.use("downloads").then(function (downloads) {
+      if (!downloads) return; // segue como link comum
+      cv.addEventListener("click", function (event) {
+        event.preventDefault();
+        var original = cv.textContent;
+        cv.textContent = "Preparando…";
+        fetch(cv.getAttribute("href"))
+          .then(function (response) {
+            if (!response.ok) throw new Error("fetch");
+            return response.blob();
+          })
+          .then(function (blob) {
+            return downloads.save({ filename: "renata-trocoli-cv.pdf", data: blob });
+          })
+          .then(function () {
+            cv.textContent = original;
+          })
+          .catch(function () {
+            cv.textContent = original;
+            window.open(cv.getAttribute("href"), "_blank", "noopener");
+          });
+      });
+    }).catch(function () {});
+  })();
+
+  // E-mail — dentro do visualizador de artifacts, "mailto:" não abre o cliente de e-mail
+  // e ainda deixa a página em branco. Nesse contexto o clique é interceptado e o endereço
+  // é copiado. Fora dele (domínio próprio), o mailto: segue funcionando normalmente.
+  (function () {
+    var mail = document.getElementById("link-email");
+    if (!mail) return;
+
+    var noMailto = !!window.claude; // visualizador de artifacts
+    if (!noMailto) return;
+
+    mail.addEventListener("click", function (event) {
+      event.preventDefault();
+      var original = mail.getAttribute("data-label") || mail.textContent;
+      mail.setAttribute("data-label", original);
+      function feedback(texto) {
+        mail.textContent = texto;
+        setTimeout(function () { mail.textContent = original; }, 1800);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText("retrocoli@gmail.com")
+          .then(function () { feedback("e-mail copiado"); })
+          .catch(function () { feedback("retrocoli@gmail.com"); });
+      } else {
+        feedback("retrocoli@gmail.com");
+      }
+    });
+  })();
+</script>
+</body>
+</html>
