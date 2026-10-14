@@ -93,6 +93,30 @@
     transition: color 220ms ease;
   }
   .case:hover .case-title { color: var(--accent); }
+
+  .case-thumb {
+    position: relative;
+    width: 318px;
+    height: 239px;
+    border-radius: 14px;
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    overflow: hidden;
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
+  .case-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    transition: transform 420ms ease;
+  }
+  .case:hover .case-thumb img,
+  .case:focus-visible .case-thumb img {
+    transform: scale(1.035);
+  }
+
   .case-arrow {
     display: inline-block;
     opacity: 0;
@@ -219,15 +243,19 @@
 </div>
 <!-- 01 -->
 <a aria-label="Case 01 — iônica V3 APP, FTD Educação" class="case group" href="cases/ionica-v3.html">
-<div class="grid gap-x-8 gap-y-4 py-8 sm:py-10 md:grid-cols-[3.5rem_minmax(0,1fr)] lg:grid-cols-[3.5rem_minmax(0,0.95fr)_minmax(0,1.05fr)]">
-<span class="mono label pt-1.5 md:pt-2.5">01</span>
+<div class="flex flex-col sm:flex-row gap-5 sm:gap-7 py-8 sm:py-10">
+<span class="mono label pt-1.5 md:pt-2.5 sm:flex-shrink-0">01</span>
+<div class="flex flex-col sm:flex-row gap-5 sm:gap-7 flex-1">
+<div class="case-thumb">
+<img src="thumbs/ionica-v3.jpg" alt="Tela de Atividades do APP iônica V3, com resumo de pendências e acessos rápidos">
+</div>
+<div class="flex-1 grid gap-x-8 gap-y-4 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
 <h3 class="case-title text-[clamp(1.5rem,3vw,2.125rem)] max-w-[16ch]">
           iônica V3 APP <span class="font-normal" style="color: var(--ink-muted);">(FTD Educação)</span>
 <span aria-hidden="true" class="case-arrow">→</span>
 </h3>
-<div class="md:col-start-2 lg:col-start-3 lg:pt-2">
+<div class="lg:pt-2">
 <p class="max-w-[56ch] text-[0.9375rem] sm:text-base leading-[1.7]" style="color: var(--ink-muted);">
-<span class="mono text-[0.75rem] uppercase tracking-[0.12em] mr-1.5" style="color: var(--ink-faint);">TL;DR</span>
             A V3 evolui a experiência de Atividades que já existe no APP para uma jornada mais
             completa, ampliando acompanhamento e interação do Estudante. Meu trabalho é repensar
             essas experiências para o contexto mobile, equilibrando arquitetura, hierarquia,
@@ -236,18 +264,24 @@
 <div class="tags"><span class="tag">Web para app</span><span class="tag">Mobile nativo</span><span class="tag">Engajamento</span><span class="tag">UI</span></div>
 </div>
 </div>
+</div>
+</div>
 </a>
 <!-- 02 -->
 <a aria-label="Case 02 — Evolução da Home iônica web V1, FTD Educação" class="case group" href="cases/ionica-home.html">
-<div class="grid gap-x-8 gap-y-4 py-8 sm:py-10 md:grid-cols-[3.5rem_minmax(0,1fr)] lg:grid-cols-[3.5rem_minmax(0,0.95fr)_minmax(0,1.05fr)]">
-<span class="mono label pt-1.5 md:pt-2.5">02</span>
+<div class="flex flex-col sm:flex-row gap-5 sm:gap-7 py-8 sm:py-10">
+<span class="mono label pt-1.5 md:pt-2.5 sm:flex-shrink-0">02</span>
+<div class="flex flex-col sm:flex-row gap-5 sm:gap-7 flex-1">
+<div class="case-thumb">
+<img src="thumbs/ionica-home.jpg" alt="Home da plataforma iônica, com livros recentes, atividades publicadas e cursos recentes">
+</div>
+<div class="flex-1 grid gap-x-8 gap-y-4 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
 <h3 class="case-title text-[clamp(1.5rem,3vw,2.125rem)] max-w-[16ch]">
           Evolução da Home iônica web V1 <span class="font-normal" style="color: var(--ink-muted);">(FTD Educação)</span>
 <span aria-hidden="true" class="case-arrow">→</span>
 </h3>
-<div class="md:col-start-2 lg:col-start-3 lg:pt-2">
+<div class="lg:pt-2">
 <p class="max-w-[56ch] text-[0.9375rem] sm:text-base leading-[1.7]" style="color: var(--ink-muted);">
-<span class="mono text-[0.75rem] uppercase tracking-[0.12em] mr-1.5" style="color: var(--ink-faint);">TL;DR</span>
             A Home reunia quase tudo que a plataforma oferecia, mas professores e estudantes a
             atravessavam direto para o menu lateral. Cruzei apontamentos de CSAT, sessões de
             shadowing e mapas de calor para entender por quê, e reorganizei a tela como um painel
@@ -257,18 +291,24 @@
 <div class="tags"><span class="tag">Pesquisa comportamental</span><span class="tag">Mapas de calor</span><span class="tag">Arquitetura da informação</span><span class="tag">UI</span></div>
 </div>
 </div>
+</div>
+</div>
 </a>
 <!-- 03 -->
 <a aria-label="Case 03 — Templates de matérias do Estadão" class="case group" href="cases/estadao-templates.html">
-<div class="grid gap-x-8 gap-y-4 py-8 sm:py-10 md:grid-cols-[3.5rem_minmax(0,1fr)] lg:grid-cols-[3.5rem_minmax(0,0.95fr)_minmax(0,1.05fr)]">
-<span class="mono label pt-1.5 md:pt-2.5">03</span>
+<div class="flex flex-col sm:flex-row gap-5 sm:gap-7 py-8 sm:py-10">
+<span class="mono label pt-1.5 md:pt-2.5 sm:flex-shrink-0">03</span>
+<div class="flex flex-col sm:flex-row gap-5 sm:gap-7 flex-1">
+<div class="case-thumb">
+<img src="thumbs/estadao-templates.jpg" alt="Template de matéria do Estadão, versões mobile e desktop">
+</div>
+<div class="flex-1 grid gap-x-8 gap-y-4 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
 <h3 class="case-title text-[clamp(1.5rem,3vw,2.125rem)] max-w-[16ch]">
           Templates de matérias do Estadão
           <span aria-hidden="true" class="case-arrow">→</span>
 </h3>
-<div class="md:col-start-2 lg:col-start-3 lg:pt-2">
+<div class="lg:pt-2">
 <p class="max-w-[56ch] text-[0.9375rem] sm:text-base leading-[1.7]" style="color: var(--ink-muted);">
-<span class="mono text-[0.75rem] uppercase tracking-[0.12em] mr-1.5" style="color: var(--ink-faint);">TL;DR</span>
             O template de matéria precisava funcionar ao mesmo tempo para o leitor, a publicidade e o
             SEO. Como designer da squad do site, conduzi o redesign da análise de dados ao handoff e
             testei três alternativas com leitores. Resultados:
@@ -280,25 +320,33 @@
 <div class="tags"><span class="tag">Pesquisa com usuários</span><span class="tag">Métricas de negócio</span><span class="tag">SEO &amp; performance</span><span class="tag">UI</span></div>
 </div>
 </div>
+</div>
+</div>
 </a>
 
 
 <!-- 05 -->
 <a aria-label="Case 04 — Eleições Municipais 2024, Estadão" class="case group" href="cases/eleicoes-2024.html">
-<div class="grid gap-x-8 gap-y-4 py-8 sm:py-10 md:grid-cols-[3.5rem_minmax(0,1fr)] lg:grid-cols-[3.5rem_minmax(0,0.95fr)_minmax(0,1.05fr)]">
-<span class="mono label pt-1.5 md:pt-2.5">04</span>
+<div class="flex flex-col sm:flex-row gap-5 sm:gap-7 py-8 sm:py-10">
+<span class="mono label pt-1.5 md:pt-2.5 sm:flex-shrink-0">04</span>
+<div class="flex flex-col sm:flex-row gap-5 sm:gap-7 flex-1">
+<div class="case-thumb">
+<img src="thumbs/eleicoes-2024.jpg" alt="Widget de apuração das Eleições Municipais 2024, versões mobile e desktop">
+</div>
+<div class="flex-1 grid gap-x-8 gap-y-4 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
 <h3 class="case-title text-[clamp(1.5rem,3vw,2.125rem)] max-w-[16ch]">
           Eleições Municipais 2024 <span class="font-normal" style="color: var(--ink-muted);">(Estadão)</span>
 <span aria-hidden="true" class="case-arrow">→</span>
 </h3>
-<div class="md:col-start-2 lg:col-start-3 lg:pt-2">
+<div class="lg:pt-2">
 <p class="max-w-[56ch] text-[0.9375rem] sm:text-base leading-[1.7]" style="color: var(--ink-muted);">
-<span class="mono text-[0.75rem] uppercase tracking-[0.12em] mr-1.5" style="color: var(--ink-faint);">TL;DR</span>
             Experiência e interface da cobertura eleitoral em tempo real: widgets dinâmicos para a
             Home, cards de candidatos nos templates de matéria e páginas de apuração com mapas
             interativos. Alta densidade de dados, performance sob picos históricos de audiência.
           </p>
 <div class="tags"><span class="tag">Dados em tempo real</span><span class="tag">Visualização de dados</span><span class="tag">Mobile</span><span class="tag">UI</span></div>
+</div>
+</div>
 </div>
 </div>
 </a>
